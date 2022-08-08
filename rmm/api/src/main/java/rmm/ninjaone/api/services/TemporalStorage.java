@@ -18,7 +18,7 @@ public class TemporalStorage {
         user.id = users.size();
         user.name = name;
         user.email = email;
-        user.Password = password;
+        user.password = password;
 
         users.add(user);
 
@@ -28,11 +28,4 @@ public class TemporalStorage {
     public TemporalUser findByEmail(String email) {
         return users.stream().filter(user -> user.email.equalsIgnoreCase(email)).findFirst().orElse(null);
     }
-}
-
-class TemporalUser {
-    public long id;
-    public String name;
-    public String email;
-    public String Password;
 }

@@ -20,7 +20,10 @@ public class RmmUserDetailsService implements UserDetailsService {
         //TODO: Fetch from use case
 
         var user = storage.findByEmail(username);
-        var rmmUser = new RmmUser(user.id, user.email, user.Password);
+        if (user == null)
+            throw new UsernameNotFoundException(username);
+
+        var rmmUser = new RmmUser(user.id, user.email, user.password);
         return rmmUser;
     }
 }
