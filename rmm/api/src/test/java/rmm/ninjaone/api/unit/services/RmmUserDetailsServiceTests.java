@@ -1,4 +1,4 @@
-package rmm.ninjaone.api.services;
+package rmm.ninjaone.api.unit.services;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -14,6 +14,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import rmm.ninjaone.api.data.UserMother;
+import rmm.ninjaone.api.services.RmmUserDetailsService;
+import rmm.ninjaone.api.services.TemporalStorage;
 import rmm.ninjaone.buildingblocks.data.EmailMother;
 
 @ExtendWith(MockitoExtension.class)
@@ -36,13 +38,9 @@ public class RmmUserDetailsServiceTests {
         Mockito.when(storage.findByEmail(user.email)).thenReturn(user);
 
         // Act
-        var details = userDetails.loadUserByUsername(user.email);
+        var rmmUser = userDetails.loadUserByUsername(user.email);
 
         // Assert
-        assertEquals(details.getClass(), RmmUser.class);
-        var rmmUser = (RmmUser)details;
-
-        assertEquals(user.id, rmmUser.getUserId());
         assertEquals(user.email, rmmUser.getUsername());
         assertEquals(user.password, rmmUser.getPassword());
     }

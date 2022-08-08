@@ -14,7 +14,7 @@ dependencies {
     implementation 'com.auth0:java-jwt:4.0.0'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation(testFixtures(project(':building-blocks')))
+    testImplementation project(':building-blocks').sourceSets.test.output
 }
 
 test {
