@@ -1,7 +1,9 @@
 package rmm.ninjaone.api.services;
 
+import java.util.UUID;
+
 public class TemporalUser {
-    public long id;
+    public UUID id;
     public String name;
     public String email;
     public String password;

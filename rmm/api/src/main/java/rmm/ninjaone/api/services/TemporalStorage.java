@@ -2,6 +2,7 @@ package rmm.ninjaone.api.services;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.stereotype.Component;
 
@@ -15,7 +16,7 @@ public class TemporalStorage {
     
     public TemporalUser Add(String name, String email, String password) {
         var user = new TemporalUser();
-        user.id = users.size();
+        user.id = UUID.randomUUID();
         user.name = name;
         user.email = email;
         user.password = password;

@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import rmm.ninjaone.api.security.SecurityProperties;
 
 import java.util.Date;
+import java.util.UUID;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -27,7 +28,7 @@ public class JwtProvider {
             .create()
             .withSubject(user.getUsername())
             .withExpiresAt(expiresAt)
-            .withClaim(properties.getUserClaim(), user.getUserId())
+            .withClaim(properties.getUserClaim(), user.getUserId().toString())
             .sign(Algorithm.HMAC512(secret));
 
         var details = new JwtDetails();
@@ -46,7 +47,7 @@ public class JwtProvider {
             .verify(accessToken);
 
         var email = jwt.getSubject();
-        var userId = jwt.getClaim(properties.getUserClaim()).asLong();
+        var userId = UUID.fromString(jwt.getClaim(properties.getUserClaim()).asString());
 
         var authentication = new UsernamePasswordAuthenticationToken(email, null);
         authentication.setDetails(userId);

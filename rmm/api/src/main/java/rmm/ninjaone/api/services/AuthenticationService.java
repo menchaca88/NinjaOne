@@ -1,5 +1,7 @@
 package rmm.ninjaone.api.services;
 
+import java.util.UUID;
+
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -26,7 +28,7 @@ public class AuthenticationService {
         return jwtProvider.createToken(authentication);
     }
 
-    public long register(String name, String email, String password) {
+    public UUID register(String name, String email, String password) {
         var encodedPassword = passwordEncoder.encode(password);
 
         //TODO: call use case
