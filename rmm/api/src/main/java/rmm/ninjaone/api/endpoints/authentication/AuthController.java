@@ -15,7 +15,7 @@ import rmm.ninjaone.api.services.AuthenticationService;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(path = "${apiPrefix}")
+@RequestMapping(path = "${api.prefix}")
 public class AuthController {
     private final AuthenticationService authenticationService;
 

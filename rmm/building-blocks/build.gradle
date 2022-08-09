@@ -2,6 +2,9 @@ dependencies {
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
 
+    implementation 'net.sizovs:pipelinr:0.7'
+    implementation 'com.github.jmnarloch:modelmapper-spring-boot-starter:1.1.0'
+
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'

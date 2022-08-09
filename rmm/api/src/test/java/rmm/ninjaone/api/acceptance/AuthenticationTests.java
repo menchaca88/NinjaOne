@@ -79,9 +79,9 @@ public class AuthenticationTests {
 	}
 
     @Test
-	void auth_testEndpoint_Returns403() throws Exception {
+	void auth_testEndpoint_Returns401() throws Exception {
 		mockMvc.perform(
             get("/api/test"))
-            .andExpect(status().isForbidden());
+            .andExpect(status().isUnauthorized());
 	}
 }

@@ -10,6 +10,7 @@ spring:
 springdoc:
   api-docs:
       path: '/api/docs'
+
 security:
   expirationDate: 1800000
   userClaim: 'user_id'
@@ -18,4 +19,6 @@ security:
   headerPrefix: 'Bearer'
   loginUrl: '/api/login'
   registerUrl: '/api/register'
-apiPrefix: '/api'
+
+api:
+  prefix: '/api'
