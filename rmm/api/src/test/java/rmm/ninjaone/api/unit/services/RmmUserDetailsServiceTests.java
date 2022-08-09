@@ -15,7 +15,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import rmm.ninjaone.api.data.UserMother;
 import rmm.ninjaone.api.services.RmmUserDetailsService;
-import rmm.ninjaone.api.services.TemporalStorage;
+import rmm.ninjaone.api.support.TemporalStorage;
 import rmm.ninjaone.buildingblocks.data.EmailMother;
 
 @ExtendWith(MockitoExtension.class)

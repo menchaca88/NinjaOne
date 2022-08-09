@@ -1,15 +1,12 @@
 package rmm.ninjaone.api.services;
 
-import java.util.Collections;
-import java.util.UUID;
-
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
+import rmm.ninjaone.api.support.TemporalStorage;
 
 @Service
 @RequiredArgsConstructor
@@ -26,18 +23,5 @@ public class RmmUserDetailsService implements UserDetailsService {
 
         var rmmUser = new RmmUser(user.id, user.email, user.password);
         return rmmUser;
-    }
-}
-
-class RmmUser extends User {
-    private final UUID userId;
-
-    public RmmUser(UUID userId, String username, String password) {
-        super(username, password, Collections.emptyList());
-        this.userId = userId;
-    }
-
-    public UUID getUserId() {
-        return userId;
     }
 }

@@ -68,14 +68,14 @@ public class AuthenticationTests {
 	}
 
     @Test
-	void auth_loginNonExistingUser_Returns403() throws Exception {
+	void auth_loginNonExistingUser_Returns401() throws Exception {
         var request = LoginUserMother.valid();
 
 		mockMvc.perform(
             post("/api/login")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
-			.andExpect(status().isForbidden());
+			.andExpect(status().isUnauthorized());
 	}
 
     @Test

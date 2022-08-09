@@ -1,4 +1,4 @@
-package rmm.ninjaone.api.services;
+package rmm.ninjaone.api.support.jwt;
 
 import java.util.Date;
 

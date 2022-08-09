@@ -2,7 +2,7 @@ package rmm.ninjaone.api.data;
 
 import java.util.UUID;
 
-import rmm.ninjaone.api.services.TemporalUser;
+import rmm.ninjaone.api.support.TemporalUser;
 import rmm.ninjaone.buildingblocks.data.EmailMother;
 import rmm.ninjaone.buildingblocks.data.ObjectMother;
 import rmm.ninjaone.buildingblocks.data.StringMother;

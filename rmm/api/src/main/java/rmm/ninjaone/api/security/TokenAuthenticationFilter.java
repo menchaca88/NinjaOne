@@ -4,7 +4,7 @@ import org.springframework.security.web.authentication.AuthenticationFilter;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
-import rmm.ninjaone.api.services.JwtProvider;
+import rmm.ninjaone.api.support.jwt.JwtProvider;
 
 @Component
 public class TokenAuthenticationFilter extends AuthenticationFilter {

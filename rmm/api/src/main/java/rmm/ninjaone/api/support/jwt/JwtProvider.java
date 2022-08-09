@@ -1,10 +1,11 @@
-package rmm.ninjaone.api.services;
+package rmm.ninjaone.api.support.jwt;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 
 import lombok.RequiredArgsConstructor;
 import rmm.ninjaone.api.security.SecurityProperties;
+import rmm.ninjaone.api.services.RmmUser;
 
 import java.util.Date;
 import java.util.UUID;

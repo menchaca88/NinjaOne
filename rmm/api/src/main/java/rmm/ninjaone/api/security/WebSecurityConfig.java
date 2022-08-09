@@ -15,6 +15,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AnonymousAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.LogoutFilter;
+
+import rmm.ninjaone.api.support.exceptions.handlers.PipelineExceptionsHandler;
 
 @Configuration
 @EnableWebSecurity
@@ -24,6 +27,9 @@ public class WebSecurityConfig {
 
     @Autowired
     private TokenAuthenticationFilter tokenFilter;
+
+    @Autowired
+    private PipelineExceptionsHandler exceptionHandler;
 
     @Value("${springdoc.api-docs.path}")
     private String docsUrl;
@@ -45,13 +51,18 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and()
             .addFilterAt(tokenFilter, AnonymousAuthenticationFilter.class)
+            .addFilterBefore(exceptionHandler, LogoutFilter.class)
             .authorizeRequests()
-            .antMatchers(properties.getLoginUrl(), properties.getRegisterUrl()).permitAll()
-            .antMatchers(docsUrl).permitAll()
-            .anyRequest().authenticated()
+                .antMatchers(properties.getLoginUrl(), properties.getRegisterUrl()).permitAll()
+                .antMatchers(docsUrl).permitAll()
+                .anyRequest().authenticated()
+            .and()
+            .exceptionHandling()
+                .authenticationEntryPoint(exceptionHandler)
             .and()
             .cors().and()
             .csrf().disable()

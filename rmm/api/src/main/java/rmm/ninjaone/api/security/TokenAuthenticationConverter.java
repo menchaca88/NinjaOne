@@ -7,7 +7,7 @@ import org.springframework.security.web.authentication.AuthenticationConverter;
 import org.springframework.util.StringUtils;
 
 import lombok.RequiredArgsConstructor;
-import rmm.ninjaone.api.services.JwtProvider;
+import rmm.ninjaone.api.support.jwt.JwtProvider;
 
 @RequiredArgsConstructor
 public class TokenAuthenticationConverter implements AuthenticationConverter {

@@ -9,6 +9,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
+import rmm.ninjaone.api.support.TemporalStorage;
+import rmm.ninjaone.api.support.jwt.JwtDetails;
+import rmm.ninjaone.api.support.jwt.JwtProvider;
 
 @Service
 @RequiredArgsConstructor
