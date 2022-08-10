@@ -1,5 +1,9 @@
 package rmm.ninjaone.identity.domain.models;
 
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -8,21 +12,26 @@ import rmm.ninjaone.buildingblocks.domain.bases.AggregateRoot;
 import rmm.ninjaone.buildingblocks.domain.events.users.UserAddedEvent;
 import rmm.ninjaone.buildingblocks.domain.events.users.UserDeletedEvent;
 import rmm.ninjaone.buildingblocks.domain.events.users.UserRenamedEvent;
+import rmm.ninjaone.buildingblocks.domain.valueObjects.Email;
 
+@Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class RmmUser extends AggregateRoot {
+    @Enumerated(EnumType.STRING)
+    private RmmRole role;
     private String name;
-    private String email;
+    private Email email;
     private String password;
 
-    private RmmUser(String name, String email) {
+    private RmmUser(String name, RmmRole role, Email email) {
         super();
 
-        this.name = name;
-        this.email = email;
+        rename(name);
+        setEmail(email);
+        setRole(role);
         changePassword("");
 
-        AddEvent(new UserAddedEvent(getId(), name));
+        registerEvent(new UserAddedEvent(getId(), name));
     }
 
     public String getName() {
@@ -30,15 +39,15 @@ public class RmmUser extends AggregateRoot {
     }
 
     public void rename(@NonNull String name) {
-        AddEvent(new UserRenamedEvent(getId(), this.name, name));
+        registerEvent(new UserRenamedEvent(getId(), this.name, name));
         this.name = name;
     }
 
-    public String getEmail() {
+    public Email getEmail() {
         return email;
     }
 
-    public void setEmail(@NonNull String email) {
+    public void setEmail(@NonNull Email email) {
         this.email = email;
     }
 
@@ -50,12 +59,20 @@ public class RmmUser extends AggregateRoot {
         this.password = password;
     }
 
-    public static RmmUser create(@NonNull String name, @NonNull String email) {
-        return new RmmUser(name, email);
+    public RmmRole getRole() {
+        return role;
+    }
+
+    public void setRole(@NonNull RmmRole role) {
+        this.role = role;
+    }
+
+    public static RmmUser create(@NonNull String name, RmmRole role, @NonNull Email email) {
+        return new RmmUser(name, role, email);
     }
 
     @Override
-    public void setDeleted() {
-        AddEvent(new UserDeletedEvent(getId()));
+    protected void deleted() {
+        registerEvent(new UserDeletedEvent(getId()));
     }
 }

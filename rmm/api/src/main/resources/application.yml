@@ -1,3 +1,8 @@
+root:
+  name: 'root'
+  email: 'root@ninjaone.rmm'
+  password: 'password'
+
 spring:
   jpa:
     hibernate:
@@ -23,3 +28,4 @@ security:
 
 api:
   prefix: '/api'
+  users: '/api/users'
