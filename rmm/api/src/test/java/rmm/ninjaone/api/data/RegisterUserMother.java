@@ -10,7 +10,7 @@ public class RegisterUserMother extends ObjectMother {
         var request = new RegisterUserRequest();
 
         request.setEmail(EmailMother.random());
-        request.setFullName(StringMother.random());
+        request.setName(StringMother.random());
         request.setPassword(StringMother.random(8, 16));
 
         return request;
