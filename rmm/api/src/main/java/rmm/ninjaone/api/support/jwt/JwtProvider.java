@@ -12,6 +12,7 @@ import java.util.UUID;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -30,6 +31,11 @@ public class JwtProvider {
             .withSubject(user.getUsername())
             .withExpiresAt(expiresAt)
             .withClaim(properties.getUserClaim(), user.getUserId().toString())
+            .withArrayClaim(properties.getRolesClaim(), user
+                .getAuthorities()
+                .stream()
+                .map(a -> a.getAuthority())
+                .toArray(String[]::new))
             .sign(Algorithm.HMAC512(secret));
 
         var details = new JwtDetails();
@@ -49,8 +55,11 @@ public class JwtProvider {
 
         var email = jwt.getSubject();
         var userId = UUID.fromString(jwt.getClaim(properties.getUserClaim()).asString());
+        var authorities = jwt
+        .getClaim(properties.getRolesClaim())
+        .asArray(String.class);
 
-        var authentication = new UsernamePasswordAuthenticationToken(email, null);
+        var authentication = new UsernamePasswordAuthenticationToken(email, null, AuthorityUtils.createAuthorityList(authorities));
         authentication.setDetails(userId);
 
         return authentication;

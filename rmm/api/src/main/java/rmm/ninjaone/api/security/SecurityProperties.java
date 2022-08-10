@@ -11,6 +11,7 @@ import lombok.Data;
 public class SecurityProperties {
     private long expirationDate;
     private String userClaim;
+    private String rolesClaim;
     private String secret;
     private String authHeader;
     private String headerPrefix;

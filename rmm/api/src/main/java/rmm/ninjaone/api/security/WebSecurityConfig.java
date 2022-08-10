@@ -31,11 +31,14 @@ public class WebSecurityConfig {
     @Autowired
     private PipelineExceptionsHandler exceptionHandler;
 
+    @Value("${api.users}")
+    private String usersUrl;
+
     @Value("${springdoc.api-docs.path}")
     private String docsUrl;
 
     @Bean
-    public PasswordEncoder passwordEncoder() {
+    public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
@@ -58,8 +61,9 @@ public class WebSecurityConfig {
             .addFilterBefore(exceptionHandler, LogoutFilter.class)
             .authorizeRequests()
                 .antMatchers(properties.getLoginUrl(), properties.getRegisterUrl()).permitAll()
-                .antMatchers(docsUrl).permitAll()
-                .anyRequest().authenticated()
+                .antMatchers(allPaths(docsUrl)).permitAll()
+                .antMatchers(allPaths(usersUrl)).hasAuthority(Authorities.Admin)
+                .anyRequest().hasAnyAuthority(Authorities.All)
             .and()
             .exceptionHandling()
                 .authenticationEntryPoint(exceptionHandler)
@@ -71,5 +75,9 @@ public class WebSecurityConfig {
             .logout().disable();
         
         return http.build();
+    }
+
+    private String allPaths(String path) {
+        return String.format("%s**", path);
     }
 }

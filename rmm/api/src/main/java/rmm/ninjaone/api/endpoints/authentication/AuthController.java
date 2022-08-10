@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
+import rmm.ninjaone.api.security.Authorities;
 import rmm.ninjaone.api.services.AuthenticationService;
 
 @RestController
@@ -21,7 +22,11 @@ public class AuthController {
 
     @PostMapping(value = "/register")
     public ResponseEntity<UserRegisteredResponse> signup(@Valid @RequestBody RegisterUserRequest request) {
-        var userId = authenticationService.register(request.getFullName(), request.getEmail(), request.getPassword());
+        var userId = authenticationService.register(
+            request.getName(),
+            Authorities.User,
+            request.getEmail(), 
+            request.getPassword());
 
         var response = new UserRegisteredResponse();
         response.setUserEmail(request.getEmail());

@@ -7,7 +7,6 @@ import lombok.Data;
 
 @Data
 public class LoginUserRequest {
-    @NotNull(message = "{errors.email.required}")
     @Email(message = "{errors.email.invalid}")
     private String email;
     @NotNull(message = "{errors.password.required}")
