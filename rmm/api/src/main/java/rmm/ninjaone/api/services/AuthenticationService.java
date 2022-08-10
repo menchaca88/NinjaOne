@@ -5,21 +5,20 @@ import java.util.UUID;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import an.awesome.pipelinr.Pipeline;
 import lombok.RequiredArgsConstructor;
-import rmm.ninjaone.api.support.TemporalStorage;
 import rmm.ninjaone.api.support.jwt.JwtDetails;
 import rmm.ninjaone.api.support.jwt.JwtProvider;
+import rmm.ninjaone.identity.application.commands.CreateUser.CreateUserCommand;
 
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService {
-    private final TemporalStorage storage;
+    private final Pipeline pipeline;
 
     private final JwtProvider jwtProvider;
-    private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
 
     public JwtDetails login(String username, String password) {
@@ -31,10 +30,14 @@ public class AuthenticationService {
         return jwtProvider.createToken(authentication);
     }
 
-    public UUID register(String name, String email, String password) {
-        var encodedPassword = passwordEncoder.encode(password);
-
-        //TODO: call use case
-        return storage.Add(name, email, encodedPassword).id;
+    public UUID register(String name, String role, String email, String password) {
+        var command = new CreateUserCommand();
+        command.setName(name);
+        command.setEmail(email);
+        command.setPassword(password);
+        command.setRole(role);
+        
+        var result = pipeline.send(command);
+        return result.getId();
     }
 }

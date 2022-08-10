@@ -48,4 +48,15 @@ public class GeneralExceptionsHandler {
         
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST); 
     }
+
+    @ExceptionHandler(value = { IllegalArgumentException.class })
+    public ResponseEntity<ErrorResponse> handleIllegalArgumentException(IllegalArgumentException ex, WebRequest request) {
+        String message = ex.getLocalizedMessage();
+        if (message == null || message.isEmpty())
+            message = ex.toString();
+
+        ErrorResponse response = new ErrorResponse(message, ErrorCodes.BAD_REQUEST);
+        
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST); 
+    }
 }

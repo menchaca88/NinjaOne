@@ -7,6 +7,6 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import rmm.ninjaone.buildingblocks.domain.bases.AggregateRoot;
 
-public interface Repository<T extends AggregateRoot> extends JpaRepository<T, UUID>, JpaSpecificationExecutor<T>, CustomizedActions<T> {
+public interface Repository<T extends AggregateRoot> extends JpaRepository<T, UUID>, JpaSpecificationExecutor<T> {
     
 }

@@ -5,23 +5,32 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import an.awesome.pipelinr.Pipeline;
 import lombok.RequiredArgsConstructor;
-import rmm.ninjaone.api.support.TemporalStorage;
+import rmm.ninjaone.identity.application.queries.UserDetails.UserDetailsQuery;
+import rmm.ninjaone.identity.domain.exceptions.UserNotFoundException;
 
 @Service
 @RequiredArgsConstructor
 public class RmmUserDetailsService implements UserDetailsService {
-    private final TemporalStorage storage;
+    private final Pipeline pipeline;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        //TODO: Fetch from use case
+        var query = new UserDetailsQuery();
+        query.setEmail(username);
 
-        var user = storage.findByEmail(username);
-        if (user == null)
+        try {
+            var result = pipeline.send(query);
+            var rmmUser = new RmmUser(
+                result.getId(),
+                result.getEmail(),
+                result.getPassword(),
+                result.getRole());
+
+            return rmmUser;
+        } catch (UserNotFoundException ex) {
             throw new UsernameNotFoundException(username);
-
-        var rmmUser = new RmmUser(user.id, user.email, user.password);
-        return rmmUser;
+        }
     }
 }
