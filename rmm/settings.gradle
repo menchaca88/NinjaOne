@@ -2,3 +2,4 @@ include 'api'
 include 'building-blocks'
 
 include 'modules:identity'
+include 'modules:catalog'

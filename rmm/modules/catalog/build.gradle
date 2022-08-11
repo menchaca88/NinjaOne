@@ -1,30 +1,21 @@
-plugins {
-	id 'org.springframework.boot' version '2.7.2'
-}
-
 dependencies {
     implementation project(':building-blocks')
-
-    implementation project(':modules:identity')
-    implementation project(':modules:catalog')
 
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
 
     implementation 'net.sizovs:pipelinr:0.7'
+    implementation 'com.github.jmnarloch:modelmapper-spring-boot-starter:1.1.0'
 
+    implementation 'org.assertj:assertj-core'
     implementation 'org.hibernate.validator:hibernate-validator'
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    implementation 'org.springframework.boot:spring-boot-starter-security'
-    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.springdoc:springdoc-openapi-ui:1.6.9'
-    implementation 'com.auth0:java-jwt:4.0.0'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
     
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation project(':building-blocks').sourceSets.test.output
-
-    runtimeOnly 'mysql:mysql-connector-java'
 }
 
 test {
