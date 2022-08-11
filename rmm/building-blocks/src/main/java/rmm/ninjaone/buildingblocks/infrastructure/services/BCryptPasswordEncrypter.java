@@ -5,7 +5,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
-import rmm.ninjaone.buildingblocks.domain.contracts.PasswordEncrypter;
+import rmm.ninjaone.buildingblocks.application.contracts.PasswordEncrypter;
 
 @Service
 @RequiredArgsConstructor

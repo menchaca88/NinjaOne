@@ -1,4 +1,4 @@
-package rmm.ninjaone.buildingblocks.domain.contracts;
+package rmm.ninjaone.buildingblocks.application.contracts;
 
 public interface PasswordEncrypter {
     String encode(CharSequence rawPassword);
