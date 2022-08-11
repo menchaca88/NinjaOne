@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import rmm.ninjaone.api.support.jwt.JwtDetails;
 import rmm.ninjaone.api.support.jwt.JwtProvider;
 import rmm.ninjaone.identity.application.commands.CreateUser.CreateUserCommand;
+import rmm.ninjaone.identity.application.queries.FindUser.FindUserQuery;
 
 @Service
 @RequiredArgsConstructor
@@ -39,5 +40,14 @@ public class AuthenticationService {
         
         var result = pipeline.send(command);
         return result.getId();
+    }
+
+    public boolean exists(String email) {
+        var query = new FindUserQuery();
+        query.setEmail(email);
+
+        var result = pipeline.send(query);
+        
+        return result != null;
     }
 }

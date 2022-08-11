@@ -15,6 +15,4 @@ public class SecurityProperties {
     private String secret;
     private String authHeader;
     private String headerPrefix;
-    private String loginUrl;
-    private String registerUrl;
 }

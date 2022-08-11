@@ -2,6 +2,8 @@ package rmm.ninjaone.api.support.exceptions.handlers;
 
 import java.util.Locale;
 
+import javax.validation.ConstraintViolationException;
+
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -56,6 +58,20 @@ public class GeneralExceptionsHandler {
             message = ex.toString();
 
         ErrorResponse response = new ErrorResponse(message, ErrorCodes.BAD_REQUEST);
+        
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST); 
+    }
+
+    @ExceptionHandler(value = { ConstraintViolationException.class })
+    public ResponseEntity<ErrorResponse> handleConstraintViolationException(ConstraintViolationException ex, WebRequest request) {
+        ErrorResponse response = new ErrorResponse(ex.toString(), ErrorCodes.BAD_REQUEST);
+        
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST); 
+    }
+
+    @ExceptionHandler(value = { AssertionError.class })
+    public ResponseEntity<ErrorResponse> handleAssertionError(AssertionError ex, WebRequest request) {
+        ErrorResponse response = new ErrorResponse(ex.toString(), ErrorCodes.BAD_REQUEST);
         
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST); 
     }

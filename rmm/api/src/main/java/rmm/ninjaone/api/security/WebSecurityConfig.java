@@ -1,7 +1,5 @@
 package rmm.ninjaone.api.security;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,25 +15,17 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AnonymousAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
 
+import lombok.RequiredArgsConstructor;
 import rmm.ninjaone.api.support.exceptions.handlers.PipelineExceptionsHandler;
+import rmm.ninjaone.api.support.setup.ApiUrls;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class WebSecurityConfig {
-    @Autowired
-    private SecurityProperties properties;
-
-    @Autowired
-    private TokenAuthenticationFilter tokenFilter;
-
-    @Autowired
-    private PipelineExceptionsHandler exceptionHandler;
-
-    @Value("${api.users}")
-    private String usersUrl;
-
-    @Value("${springdoc.api-docs.path}")
-    private String docsUrl;
+    private final TokenAuthenticationFilter tokenFilter;
+    private final PipelineExceptionsHandler exceptionHandler;
+    private final ApiUrls apiUrls;
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
@@ -60,10 +50,14 @@ public class WebSecurityConfig {
             .addFilterAt(tokenFilter, AnonymousAuthenticationFilter.class)
             .addFilterBefore(exceptionHandler, LogoutFilter.class)
             .authorizeRequests()
-                .antMatchers(properties.getLoginUrl(), properties.getRegisterUrl()).permitAll()
-                .antMatchers(allPaths(docsUrl)).permitAll()
-                .antMatchers(allPaths(usersUrl)).hasAuthority(Authorities.Admin)
-                .anyRequest().hasAnyAuthority(Authorities.All)
+                .antMatchers(apiUrls.getLogin(), apiUrls.getRegister())
+                    .permitAll()
+                .antMatchers(allPaths(apiUrls.getDocs()))
+                    .permitAll()
+                .antMatchers(allPaths(apiUrls.getUsers()), allPaths(apiUrls.getCatalog()))
+                    .hasAuthority(Authorities.Admin)
+                .anyRequest()
+                    .hasAnyAuthority(Authorities.All)
             .and()
             .exceptionHandling()
                 .authenticationEntryPoint(exceptionHandler)
