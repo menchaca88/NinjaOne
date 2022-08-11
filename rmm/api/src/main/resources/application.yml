@@ -4,6 +4,9 @@ root:
   password: 'password'
 
 spring:
+  output:
+    ansi:
+      enabled: DETECT
   jpa:
     hibernate:
       ddl-auto: update
@@ -23,9 +26,20 @@ security:
   secret: 'NinjaOneRMM'
   authHeader: 'Authorization'
   headerPrefix: 'Bearer'
-  loginUrl: '/api/login'
-  registerUrl: '/api/register'
 
 api:
   prefix: '/api'
+  login: '/api/login'
+  register: '/api/register'
   users: '/api/users'
+  catalog: '/api/catalog'
+  docs: '/api/docs'
+
+logging:
+  level:
+    root: INFO
+    org.springframework.web: ERROR
+    rmm.ninjaone: DEBUG
+    org.hibernate: ERROR
+  file:
+    name: application.log
