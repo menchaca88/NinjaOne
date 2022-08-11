@@ -51,7 +51,6 @@ public class UsersController extends BaseController {
         var command = new UpdateUserCommand();
         command.setId(request.getId());
         command.setName(request.getName());
-        command.setEmail(request.getEmail());
         command.setPassword(request.getPassword());
 
         var result = pipeline.send(command);

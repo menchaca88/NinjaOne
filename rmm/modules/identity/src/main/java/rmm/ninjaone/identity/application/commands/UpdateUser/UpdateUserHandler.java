@@ -5,7 +5,6 @@ import org.springframework.stereotype.Component;
 import an.awesome.pipelinr.Command;
 import lombok.RequiredArgsConstructor;
 import rmm.ninjaone.buildingblocks.application.contracts.PasswordEncrypter;
-import rmm.ninjaone.buildingblocks.domain.valueObjects.Email;
 import rmm.ninjaone.identity.domain.contracts.RmmUserRepository;
 import rmm.ninjaone.identity.domain.exceptions.UserNotFoundException;
 import rmm.ninjaone.identity.domain.specifications.UserSpecifications;
@@ -23,7 +22,6 @@ public class UpdateUserHandler implements Command.Handler<UpdateUserCommand, Upd
             .orElseThrow(() -> new UserNotFoundException(command.getId()));
 
         user.rename(command.getName());
-        user.setEmail(Email.of(command.getEmail()));
 
         if (command.getPassword() != null) {
             var encodedPassword = passwordEncrypter.encode(command.getPassword());

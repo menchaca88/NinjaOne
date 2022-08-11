@@ -67,7 +67,7 @@ public class RmmUser extends AggregateRoot {
         this.role = role;
     }
 
-    public static RmmUser create(@NonNull String name, RmmRole role, @NonNull Email email) {
+    public static RmmUser create(@NonNull String name, @NonNull RmmRole role, @NonNull Email email) {
         return new RmmUser(name, role, email);
     }
 

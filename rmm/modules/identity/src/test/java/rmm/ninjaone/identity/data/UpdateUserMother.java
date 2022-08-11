@@ -2,7 +2,6 @@ package rmm.ninjaone.identity.data;
 
 import java.util.UUID;
 
-import rmm.ninjaone.buildingblocks.data.EmailMother;
 import rmm.ninjaone.buildingblocks.data.ObjectMother;
 import rmm.ninjaone.buildingblocks.data.StringMother;
 import rmm.ninjaone.identity.application.commands.UpdateUser.UpdateUserCommand;
@@ -13,7 +12,6 @@ public class UpdateUserMother extends ObjectMother {
 
         command.setId(UUID.randomUUID());
         command.setName(StringMother.random());
-        command.setEmail(EmailMother.random());
         command.setPassword(StringMother.random());
 
         return command;

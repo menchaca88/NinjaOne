@@ -2,7 +2,6 @@ package rmm.ninjaone.identity.application.commands.UpdateUser;
 
 import java.util.UUID;
 
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -15,6 +14,5 @@ import lombok.Setter;
 public class UpdateUserCommand implements Command<UpdateUserResult> {
     @NotNull private UUID id;
     @NotBlank private String name;
-    @Email private String email;
     private String password;
 }

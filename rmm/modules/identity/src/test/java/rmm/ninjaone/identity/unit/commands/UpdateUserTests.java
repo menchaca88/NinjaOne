@@ -64,7 +64,7 @@ public class UpdateUserTests {
         Mockito.verify(repository).save(argThat((RmmUser u) ->
             u.getId().equals(command.getId()) &&
             u.getName().equals(command.getName()) &&
-            u.getEmail().getAddress().equals(command.getEmail()) &&
+            u.getEmail().getAddress().equals(user.getEmail().getAddress()) &&
             u.getPassword().equals(command.getPassword())
         ));
     }
@@ -87,7 +87,7 @@ public class UpdateUserTests {
         // Assert
         assertEquals(command.getId(), result.getId());
         assertEquals(command.getName(), result.getName());
-        assertEquals(command.getEmail(), result.getEmail());
+        assertEquals(user.getEmail().getAddress(), result.getEmail());
     }
 
     @Test
