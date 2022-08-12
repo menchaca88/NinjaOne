@@ -50,7 +50,10 @@ public class WebSecurityConfig {
             .addFilterAt(tokenFilter, AnonymousAuthenticationFilter.class)
             .addFilterBefore(exceptionHandler, LogoutFilter.class)
             .authorizeRequests()
-                .antMatchers(apiUrls.getLogin(), apiUrls.getRegister())
+                .antMatchers(
+                    apiUrls.getLogin(),
+                    apiUrls.getRegister(),
+                    apiUrls.getInventory())
                     .permitAll()
                 .antMatchers(allPaths(apiUrls.getDocs()))
                     .permitAll()

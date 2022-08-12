@@ -33,6 +33,7 @@ api:
   register: '/api/register'
   users: '/api/users'
   catalog: '/api/catalog'
+  inventory: 'api/inventory'
   docs: '/api/docs'
 
 logging:

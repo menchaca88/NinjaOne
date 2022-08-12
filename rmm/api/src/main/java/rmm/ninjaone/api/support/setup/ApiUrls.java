@@ -12,6 +12,7 @@ public class ApiUrls {
     private String prefix;
     private String users;
     private String catalog;
+    private String inventory;
     private String docs;
     private String login;
     private String register;
