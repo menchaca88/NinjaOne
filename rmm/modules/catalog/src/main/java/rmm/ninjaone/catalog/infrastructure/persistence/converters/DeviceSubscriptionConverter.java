@@ -8,22 +8,20 @@ import org.springframework.beans.factory.ObjectProvider;
 import lombok.RequiredArgsConstructor;
 import rmm.ninjaone.catalog.domain.models.devices.subscriptions.DeviceSubscription;
 import rmm.ninjaone.catalog.infrastructure.exceptions.UnsupportedConversionException;
-import rmm.ninjaone.catalog.infrastructure.persistence.data.SubscriptionEntity;
-import rmm.ninjaone.catalog.infrastructure.persistence.strategies.SubscriptionConverterStrategy;
 
 @Converter(autoApply = true)
 @RequiredArgsConstructor
 @SuppressWarnings("rawtypes")
 public class DeviceSubscriptionConverter implements AttributeConverter<DeviceSubscription, String> {
-    private final ObjectProvider<SubscriptionConverterStrategy> converters;
+    private final ObjectProvider<PersistentSubscriptionConverterStrategy> converters;
 
     @Override
     public String convertToDatabaseColumn(DeviceSubscription attribute) {
-        for (SubscriptionConverterStrategy converter : converters)
+        for (PersistentSubscriptionConverterStrategy converter : converters)
             if (converter.matches(attribute)) {
                 try {
-                    var entity = converter.convert(attribute);
-                    return entity.toString();
+                    var data = converter.convert(attribute);
+                    return data.toString();
                 }
                 catch (Exception ex) {
                     ex.printStackTrace();
@@ -35,19 +33,19 @@ public class DeviceSubscriptionConverter implements AttributeConverter<DeviceSub
 
     @Override
     public DeviceSubscription convertToEntityAttribute(String dbData) {
-        var entity = SubscriptionEntity.parse(dbData);
-        if (entity != null) {
-            for (SubscriptionConverterStrategy converter : converters)
-                if (converter.matches(entity)) {
+        var data = SubscriptionEntity.parse(dbData);
+        if (data != null) {
+            for (PersistentSubscriptionConverterStrategy converter : converters)
+                if (converter.matches(data)) {
                     try {
-                        return (DeviceSubscription)converter.convert(entity);
+                        return (DeviceSubscription)converter.convert(data);
                     }
                     catch (Exception ex) {
                         ex.printStackTrace();
                     }
                 }
 
-            throw new UnsupportedConversionException(entity.getType());
+            throw new UnsupportedConversionException(data.getType());
         }
 
         throw new UnsupportedConversionException();

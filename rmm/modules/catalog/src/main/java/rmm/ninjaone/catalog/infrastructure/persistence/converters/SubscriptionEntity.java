@@ -1,4 +1,4 @@
-package rmm.ninjaone.catalog.infrastructure.persistence.data;
+package rmm.ninjaone.catalog.infrastructure.persistence.converters;
 
 import lombok.Getter;
 import lombok.Setter;
