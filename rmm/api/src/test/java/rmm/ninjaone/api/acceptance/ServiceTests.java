@@ -12,20 +12,20 @@ import org.springframework.test.web.servlet.MockMvc;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-import rmm.ninjaone.api.data.users.RegisterUserMother;
+import rmm.ninjaone.api.data.catalog.CreateServiceMother;
 import rmm.ninjaone.api.endpoints.authentication.LoginUserRequest;
 import rmm.ninjaone.api.endpoints.authentication.UserLoggedResponse;
-import rmm.ninjaone.api.endpoints.authentication.UserRegisteredResponse;
 import rmm.ninjaone.api.support.setup.RootAccount;
-import rmm.ninjaone.identity.infrastructure.endpoints.users.UserResponse;
+import rmm.ninjaone.catalog.infrastructure.endpoints.services.ServiceResponse;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-public class UsersTests {
+public class ServiceTests {
     @Autowired
     private MockMvc mockMvc;
 
@@ -36,19 +36,7 @@ public class UsersTests {
     private ObjectMapper objectMapper;
 
     @Test
-	void users_createUser_userDetails_Returns200() throws Exception {
-        var registerRequest = RegisterUserMother.valid();
-
-		var registerResult = mockMvc.perform(
-            post("/api/register")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(registerRequest)))
-			.andExpect(status().isOk())
-            .andReturn();
-
-        var registerContent = registerResult.getResponse().getContentAsString();
-        var registerResponse = objectMapper.readValue(registerContent, UserRegisteredResponse.class);
-
+	void services_createService_serviceDetails_Returns200() throws Exception {
         var loginRequest = new LoginUserRequest();
         loginRequest.setEmail(root.getEmail());
         loginRequest.setPassword(root.getPassword());
@@ -62,34 +50,35 @@ public class UsersTests {
 
         var loginContent = loginResult.getResponse().getContentAsString();
         var loginResponse = objectMapper.readValue(loginContent, UserLoggedResponse.class);
+        
+        var createRequest = CreateServiceMother.valid();
+
+        var createResult = mockMvc.perform(
+            post("/api/catalog/services")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(createRequest))
+                .header("Authorization", "Bearer " + loginResponse.getAccessToken()))
+			.andExpect(status().isOk())
+            .andReturn();
+
+        var createContent = createResult.getResponse().getContentAsString();
+        var createResponse = objectMapper.readValue(createContent, ServiceResponse.class);
 
         var detailsResult = mockMvc.perform(
-            get("/api/users/" + registerResponse.getUserId())
+            get("/api/catalog/services/" + createResponse.getId())
                 .header("Authorization", "Bearer " + loginResponse.getAccessToken()))
             .andExpect(status().isOk())
             .andReturn();
 
         var detailsContent = detailsResult.getResponse().getContentAsString();
-        var detailsResponse = objectMapper.readValue(detailsContent, UserResponse.class);
+        var detailsResponse = objectMapper.readValue(detailsContent, ServiceResponse.class);
         
-        assertEquals(registerRequest.getName(), detailsResponse.getName());
-        assertEquals(registerRequest.getEmail(), detailsResponse.getEmail());
+        assertEquals(createRequest.getName(), detailsResponse.getName());
+        assertTrue(createRequest.getSubscription().getType().startsWith(detailsResponse.getSubscription()));
 	}
 
     @Test
-	void users_createUser_deleteUser_Returns200() throws Exception {
-        var registerRequest = RegisterUserMother.valid();
-
-		var registerResult = mockMvc.perform(
-            post("/api/register")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(registerRequest)))
-			.andExpect(status().isOk())
-            .andReturn();
-
-        var registerContent = registerResult.getResponse().getContentAsString();
-        var registerResponse = objectMapper.readValue(registerContent, UserRegisteredResponse.class);
-
+	void services_createService_deleteService_Returns200() throws Exception {
         var loginRequest = new LoginUserRequest();
         loginRequest.setEmail(root.getEmail());
         loginRequest.setPassword(root.getPassword());
@@ -103,17 +92,30 @@ public class UsersTests {
 
         var loginContent = loginResult.getResponse().getContentAsString();
         var loginResponse = objectMapper.readValue(loginContent, UserLoggedResponse.class);
+        
+        var createRequest = CreateServiceMother.valid();
+
+        var createResult = mockMvc.perform(
+            post("/api/catalog/services")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(createRequest))
+                .header("Authorization", "Bearer " + loginResponse.getAccessToken()))
+			.andExpect(status().isOk())
+            .andReturn();
+
+        var createContent = createResult.getResponse().getContentAsString();
+        var createResponse = objectMapper.readValue(createContent, ServiceResponse.class);
 
         var deleteResult = mockMvc.perform(
-            delete("/api/users/" + registerResponse.getUserId())
+            delete("/api/catalog/services/" + createResponse.getId())
                 .header("Authorization", "Bearer " + loginResponse.getAccessToken()))
             .andExpect(status().isOk())
             .andReturn();
 
         var deleteContent = deleteResult.getResponse().getContentAsString();
-        var deleteResponse = objectMapper.readValue(deleteContent, UserResponse.class);
+        var deleteResponse = objectMapper.readValue(deleteContent, ServiceResponse.class);
         
-        assertEquals(registerRequest.getName(), deleteResponse.getName());
-        assertEquals(registerRequest.getEmail(), deleteResponse.getEmail());
+        assertEquals(createRequest.getName(), deleteResponse.getName());
+        assertTrue(createRequest.getSubscription().getType().startsWith(deleteResponse.getSubscription()));
 	}
 }

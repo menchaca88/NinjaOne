@@ -16,8 +16,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
-import rmm.ninjaone.api.data.LoginUserMother;
-import rmm.ninjaone.api.data.RegisterUserMother;
+import rmm.ninjaone.api.data.users.LoginUserMother;
+import rmm.ninjaone.api.data.users.RegisterUserMother;
 import rmm.ninjaone.api.endpoints.authentication.LoginUserRequest;
 import rmm.ninjaone.api.endpoints.authentication.UserLoggedResponse;
 

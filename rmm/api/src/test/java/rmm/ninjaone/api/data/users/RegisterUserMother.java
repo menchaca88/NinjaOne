@@ -1,4 +1,4 @@
-package rmm.ninjaone.api.data;
+package rmm.ninjaone.api.data.users;
 
 import rmm.ninjaone.api.endpoints.authentication.RegisterUserRequest;
 import rmm.ninjaone.buildingblocks.data.EmailMother;

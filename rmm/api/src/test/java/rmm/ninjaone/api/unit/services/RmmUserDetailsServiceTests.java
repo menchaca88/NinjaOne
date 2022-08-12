@@ -15,7 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import an.awesome.pipelinr.Pipeline;
-import rmm.ninjaone.api.data.UserDetailsMother;
+import rmm.ninjaone.api.data.users.UserDetailsMother;
 import rmm.ninjaone.api.services.RmmUserDetailsService;
 import rmm.ninjaone.buildingblocks.data.EmailMother;
 import rmm.ninjaone.identity.application.queries.UserDetails.UserDetailsQuery;
