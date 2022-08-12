@@ -1,4 +1,4 @@
-package rmm.ninjaone.catalog.domain.contracts;
+package rmm.ninjaone.catalog.domain.contracts.services;
 
 import java.util.List;
 import java.util.UUID;

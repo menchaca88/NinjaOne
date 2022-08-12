@@ -1,4 +1,4 @@
-package rmm.ninjaone.catalog.domain.services;
+package rmm.ninjaone.catalog.infrastructure.services;
 
 import java.util.List;
 import java.util.UUID;
@@ -7,9 +7,9 @@ import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
 import rmm.ninjaone.buildingblocks.domain.valueObjects.Sku;
-import rmm.ninjaone.catalog.domain.contracts.DeviceRepository;
-import rmm.ninjaone.catalog.domain.contracts.DeviceSrv;
-import rmm.ninjaone.catalog.domain.contracts.ServiceRepository;
+import rmm.ninjaone.catalog.domain.contracts.devices.DeviceRepository;
+import rmm.ninjaone.catalog.domain.contracts.devices.DeviceSrv;
+import rmm.ninjaone.catalog.domain.contracts.services.ServiceRepository;
 import rmm.ninjaone.catalog.domain.exceptions.DeviceAlreadyExistsException;
 import rmm.ninjaone.catalog.domain.exceptions.DeviceNotFoundException;
 import rmm.ninjaone.catalog.domain.exceptions.DeviceUsedByServiceException;
