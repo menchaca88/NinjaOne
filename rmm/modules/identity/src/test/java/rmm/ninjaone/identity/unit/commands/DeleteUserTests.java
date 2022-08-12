@@ -20,7 +20,6 @@ import rmm.ninjaone.identity.data.DeleteUserMother;
 import rmm.ninjaone.identity.data.RmmUserMother;
 import rmm.ninjaone.identity.domain.contracts.RmmUserRepository;
 import rmm.ninjaone.identity.domain.exceptions.UserNotFoundException;
-import rmm.ninjaone.identity.domain.models.RmmUser;
 
 @ExtendWith(MockitoExtension.class)
 public class DeleteUserTests {
@@ -41,10 +40,9 @@ public class DeleteUserTests {
         // Arrange
         var command = DeleteUserMother.random();
         var user = RmmUserMother.withId(command.getId());
-        
-        Specification<RmmUser> anySpec = any(Specification.class);
+
         Mockito
-            .when(repository.findOne(anySpec))
+            .when(repository.findOne(any(Specification.class)))
             .thenReturn(Optional.of(user));
 
         // Act
@@ -60,10 +58,9 @@ public class DeleteUserTests {
         // Arrange
         var command = DeleteUserMother.random();
         var user = RmmUserMother.withId(command.getId());
-        
-        Specification<RmmUser> anySpec = any(Specification.class);
+
         Mockito
-            .when(repository.findOne(anySpec))
+            .when(repository.findOne(any(Specification.class)))
             .thenReturn(Optional.of(user));
 
         // Act
@@ -81,10 +78,9 @@ public class DeleteUserTests {
     void handle_WithNonExistingUser_ThrowsException() {
         // Arrange
         var command = DeleteUserMother.random();
-        
-        Specification<RmmUser> anySpec = any(Specification.class);
+
         Mockito
-            .when(repository.findOne(anySpec))
+            .when(repository.findOne(any(Specification.class)))
             .thenReturn(Optional.empty());
 
         // Act

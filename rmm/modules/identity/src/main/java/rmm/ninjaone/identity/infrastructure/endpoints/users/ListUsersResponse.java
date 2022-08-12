@@ -10,5 +10,3 @@ import lombok.Setter;
 public class ListUsersResponse {
     private List<UserResponse> users;
 }
-
-

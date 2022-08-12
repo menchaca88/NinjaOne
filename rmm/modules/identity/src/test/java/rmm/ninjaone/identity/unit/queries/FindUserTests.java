@@ -18,7 +18,6 @@ import rmm.ninjaone.identity.application.queries.FindUser.FindUserHandler;
 import rmm.ninjaone.identity.data.FindUserMother;
 import rmm.ninjaone.identity.data.RmmUserMother;
 import rmm.ninjaone.identity.domain.contracts.RmmUserRepository;
-import rmm.ninjaone.identity.domain.models.RmmUser;
 
 @ExtendWith(MockitoExtension.class)
 public class FindUserTests {
@@ -40,10 +39,8 @@ public class FindUserTests {
         var query = FindUserMother.random();
         var user = RmmUserMother.withEmail(query.getEmail());
         
-        
-        Specification<RmmUser> anySpec = any(Specification.class);
         Mockito
-            .when(repository.findOne(anySpec))
+            .when(repository.findOne(any(Specification.class)))
             .thenReturn(Optional.of(user));
 
         // Act
@@ -61,10 +58,9 @@ public class FindUserTests {
     void handle_WithNonExistingUser_ReturnsNull() {
         // Arrange
         var query = FindUserMother.random();
-        
-        Specification<RmmUser> anySpec = any(Specification.class);
+
         Mockito
-            .when(repository.findOne(anySpec))
+            .when(repository.findOne(any(Specification.class)))
             .thenReturn(Optional.empty());
 
         // Act

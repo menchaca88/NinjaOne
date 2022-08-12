@@ -51,10 +51,9 @@ public class UpdateUserTests {
         // Arrange
         var command = UpdateUserMother.random();
         var user = RmmUserMother.withId(command.getId());
-        
-        Specification<RmmUser> anySpec = any(Specification.class);
+
         Mockito
-            .when(repository.findOne(anySpec))
+            .when(repository.findOne(any(Specification.class)))
             .thenReturn(Optional.of(user));
 
         // Act
@@ -75,10 +74,9 @@ public class UpdateUserTests {
         // Arrange
         var command = UpdateUserMother.random();
         var user = RmmUserMother.withId(command.getId());
-        
-        Specification<RmmUser> anySpec = any(Specification.class);
+
         Mockito
-            .when(repository.findOne(anySpec))
+            .when(repository.findOne(any(Specification.class)))
             .thenReturn(Optional.of(user));
 
         // Act
@@ -95,10 +93,9 @@ public class UpdateUserTests {
     void handle_WithNonExistingUser_ThrowsException() {
         // Arrange
         var command = UpdateUserMother.random();
-        
-        Specification<RmmUser> anySpec = any(Specification.class);
+
         Mockito
-            .when(repository.findOne(anySpec))
+            .when(repository.findOne(any(Specification.class)))
             .thenReturn(Optional.empty());
 
         // Act

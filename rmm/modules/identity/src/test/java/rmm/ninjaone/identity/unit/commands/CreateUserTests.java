@@ -48,9 +48,8 @@ public class CreateUserTests {
         // Arrange
         var command = CreateUserMother.random();
         
-        Specification<RmmUser> anySpec = any(Specification.class);
         Mockito
-            .when(repository.exists(anySpec))
+            .when(repository.exists(any(Specification.class)))
             .thenReturn(false);
 
         // Act
@@ -70,10 +69,9 @@ public class CreateUserTests {
     void handle_WithNewUser_ReturnsUserDetails() {
         // Arrange
         var command = CreateUserMother.random();
-        
-        Specification<RmmUser> anySpec = any(Specification.class);
+
         Mockito
-            .when(repository.exists(anySpec))
+            .when(repository.exists(any(Specification.class)))
             .thenReturn(false);
 
         // Act
@@ -90,10 +88,9 @@ public class CreateUserTests {
     void handle_WithExistingUser_ThrowsException() {
         // Arrange
         var command = CreateUserMother.random();
-        
-        Specification<RmmUser> anySpec = any(Specification.class);
+
         Mockito
-            .when(repository.exists(anySpec))
+            .when(repository.exists(any(Specification.class)))
             .thenReturn(true);
 
         // Act

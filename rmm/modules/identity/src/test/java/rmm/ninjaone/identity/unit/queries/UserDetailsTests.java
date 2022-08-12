@@ -20,7 +20,6 @@ import rmm.ninjaone.identity.data.RmmUserMother;
 import rmm.ninjaone.identity.data.UserDetailsMother;
 import rmm.ninjaone.identity.domain.contracts.RmmUserRepository;
 import rmm.ninjaone.identity.domain.exceptions.UserNotFoundException;
-import rmm.ninjaone.identity.domain.models.RmmUser;
 
 @ExtendWith(MockitoExtension.class)
 public class UserDetailsTests {
@@ -42,10 +41,8 @@ public class UserDetailsTests {
         var query = UserDetailsMother.byId();
         var user = RmmUserMother.withId(query.getId());
         
-        
-        Specification<RmmUser> anySpec = any(Specification.class);
         Mockito
-            .when(repository.findOne(anySpec))
+            .when(repository.findOne(any(Specification.class)))
             .thenReturn(Optional.of(user));
 
         // Act
@@ -65,10 +62,8 @@ public class UserDetailsTests {
         var query = UserDetailsMother.byEmail();
         var user = RmmUserMother.withEmail(query.getEmail());
         
-        
-        Specification<RmmUser> anySpec = any(Specification.class);
         Mockito
-            .when(repository.findOne(anySpec))
+            .when(repository.findOne(any(Specification.class)))
             .thenReturn(Optional.of(user));
 
         // Act
@@ -86,10 +81,9 @@ public class UserDetailsTests {
     void handle_WithNonExistingUser_ThrowsException() {
         // Arrange
         var query = UserDetailsMother.byEmail();
-        
-        Specification<RmmUser> anySpec = any(Specification.class);
+
         Mockito
-            .when(repository.findOne(anySpec))
+            .when(repository.findOne(any(Specification.class)))
             .thenReturn(Optional.empty());
 
         // Act
