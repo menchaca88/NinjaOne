@@ -4,7 +4,7 @@ import org.springframework.stereotype.Component;
 
 import an.awesome.pipelinr.Command;
 import lombok.RequiredArgsConstructor;
-import rmm.ninjaone.catalog.domain.contracts.DeviceSrv;
+import rmm.ninjaone.catalog.domain.contracts.devices.DeviceSrv;
 
 @Component
 @RequiredArgsConstructor
@@ -19,6 +19,7 @@ public class DeleteDeviceHandler implements Command.Handler<DeleteDeviceCommand,
         result.setId(device.getId());
         result.setName(device.getName());
         result.setSku(device.getSku().getRaw());
+        result.setSubscription(device.getSubscription().getName());
             
         return result;
     }

@@ -4,7 +4,7 @@ import org.springframework.stereotype.Component;
 
 import an.awesome.pipelinr.Command;
 import lombok.RequiredArgsConstructor;
-import rmm.ninjaone.catalog.domain.contracts.DeviceSrv;
+import rmm.ninjaone.catalog.domain.contracts.devices.DeviceSrv;
 
 @Component
 @RequiredArgsConstructor
@@ -22,6 +22,7 @@ public class ListDevicesHandler implements Command.Handler<ListDevicesQuery, Lis
                 device.setId(u.getId());
                 device.setName(u.getName());
                 device.setSku(u.getSku().getRaw());
+                device.setSubscription(u.getSubscription().getName());
 
                 return device;
             })

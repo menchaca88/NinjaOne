@@ -5,6 +5,6 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public class PerUnitSubscription extends DeviceSubscription {
-    private final double unitCost;
+public class MonthlyFixedDeviceSubscription extends DeviceSubscription {
+    private final double monthlyCost;
 }

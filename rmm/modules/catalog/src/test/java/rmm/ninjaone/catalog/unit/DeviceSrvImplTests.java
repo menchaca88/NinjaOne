@@ -21,13 +21,13 @@ import org.springframework.data.jpa.domain.Specification;
 import rmm.ninjaone.buildingblocks.data.StringMother;
 import rmm.ninjaone.catalog.data.DeviceMother;
 import rmm.ninjaone.catalog.data.SubscriptionMother;
-import rmm.ninjaone.catalog.domain.contracts.DeviceRepository;
-import rmm.ninjaone.catalog.domain.contracts.ServiceRepository;
+import rmm.ninjaone.catalog.domain.contracts.devices.DeviceRepository;
+import rmm.ninjaone.catalog.domain.contracts.services.ServiceRepository;
 import rmm.ninjaone.catalog.domain.exceptions.DeviceAlreadyExistsException;
 import rmm.ninjaone.catalog.domain.exceptions.DeviceNotFoundException;
 import rmm.ninjaone.catalog.domain.exceptions.NameAlreadyUsedException;
 import rmm.ninjaone.catalog.domain.models.devices.Device;
-import rmm.ninjaone.catalog.domain.services.DeviceSrvImpl;
+import rmm.ninjaone.catalog.infrastructure.services.DeviceSrvImpl;
 
 @ExtendWith(MockitoExtension.class)
 public class DeviceSrvImplTests {

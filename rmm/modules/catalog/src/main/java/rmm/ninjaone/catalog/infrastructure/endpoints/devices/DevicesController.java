@@ -49,6 +49,8 @@ public class DevicesController extends BaseController {
     public ResponseEntity<DeviceResponse> create(@Valid @RequestBody CreateDeviceRequest request) {
         var command = new CreateDeviceCommand();
         command.setName(request.getName());
+        command.setSubscriptionType(request.getSubscription().getType());
+        command.setSubscriptionData(request.getSubscription().getData());
 
         var result = pipeline.send(command);
         var response = modelMapper.map(result, DeviceResponse.class);

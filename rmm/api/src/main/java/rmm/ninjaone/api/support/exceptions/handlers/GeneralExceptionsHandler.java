@@ -64,14 +64,22 @@ public class GeneralExceptionsHandler {
 
     @ExceptionHandler(value = { ConstraintViolationException.class })
     public ResponseEntity<ErrorResponse> handleConstraintViolationException(ConstraintViolationException ex, WebRequest request) {
-        ErrorResponse response = new ErrorResponse(ex.toString(), ErrorCodes.BAD_REQUEST);
+        String message = ex.getLocalizedMessage();
+        if (message == null || message.isEmpty())
+            message = ex.toString();
+
+        ErrorResponse response = new ErrorResponse(message, ErrorCodes.BAD_REQUEST);
         
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST); 
     }
 
     @ExceptionHandler(value = { AssertionError.class })
     public ResponseEntity<ErrorResponse> handleAssertionError(AssertionError ex, WebRequest request) {
-        ErrorResponse response = new ErrorResponse(ex.toString(), ErrorCodes.BAD_REQUEST);
+        String message = ex.getLocalizedMessage();
+        if (message == null || message.isEmpty())
+            message = ex.toString();
+
+        ErrorResponse response = new ErrorResponse(message, ErrorCodes.BAD_REQUEST);
         
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST); 
     }

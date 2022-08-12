@@ -12,4 +12,5 @@ public class ErrorCodes {
     public final static String DEVICE_IN_USE = "DEVICE_IN_USE";
     public final static String SERVICE_EXISTS = "SERVICE_ALREADY_EXISTS";
     public final static String SERVICE_NOT_FOUND = "SERVICE_NOT_FOUND";
+    public final static String SUBSCRIPTION_NOT_FOUND = "SUBSCRIPTION_NOT_FOUND";
 }

@@ -18,6 +18,7 @@ import rmm.ninjaone.catalog.domain.exceptions.DeviceUsedByServiceException;
 import rmm.ninjaone.catalog.domain.exceptions.NameAlreadyUsedException;
 import rmm.ninjaone.catalog.domain.exceptions.ServiceAlreadyExistsException;
 import rmm.ninjaone.catalog.domain.exceptions.ServiceNotFoundException;
+import rmm.ninjaone.catalog.infrastructure.exceptions.UnsupportedConversionException;
 
 @ControllerAdvice
 @RequiredArgsConstructor
@@ -77,4 +78,15 @@ public class CatalogExceptionsHandler {
 
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(value = { UnsupportedConversionException.class })
+    public ResponseEntity<ErrorResponse> handleUnsupportedConversionException(UnsupportedConversionException ex, WebRequest request, Locale locale) {
+       var message = messageSource.getMessage("errors.subscriptions.notFound", null, locale);
+
+        ErrorResponse response = new ErrorResponse(message, ErrorCodes.SUBSCRIPTION_NOT_FOUND);
+
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    }
+
+    
 }
