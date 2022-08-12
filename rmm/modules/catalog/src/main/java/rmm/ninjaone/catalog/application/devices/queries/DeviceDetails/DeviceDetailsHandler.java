@@ -2,16 +2,20 @@ package rmm.ninjaone.catalog.application.devices.queries.DeviceDetails;
 
 import org.springframework.stereotype.Component;
 
-import an.awesome.pipelinr.Command;
-import lombok.RequiredArgsConstructor;
+import rmm.ninjaone.buildingblocks.application.bases.BaseHandler;
+import rmm.ninjaone.buildingblocks.application.support.UserContext;
 import rmm.ninjaone.buildingblocks.domain.valueObjects.Sku;
 import rmm.ninjaone.catalog.domain.contracts.devices.DeviceSrv;
 import rmm.ninjaone.catalog.domain.models.devices.Device;
 
 @Component
-@RequiredArgsConstructor
-public class DeviceDetailsHandler implements Command.Handler<DeviceDetailsQuery, DeviceDetailsResult> {
+public class DeviceDetailsHandler extends BaseHandler<DeviceDetailsQuery, DeviceDetailsResult> {
     private final DeviceSrv deviceSrv;
+
+    public DeviceDetailsHandler(UserContext context, DeviceSrv deviceSrv) {
+        super(context);
+        this.deviceSrv = deviceSrv;
+    }
 
     @Override
     public DeviceDetailsResult handle(DeviceDetailsQuery command) {

@@ -2,17 +2,22 @@ package rmm.ninjaone.catalog.application.devices.commands.CreateDevice;
 
 import org.springframework.stereotype.Component;
 
-import an.awesome.pipelinr.Command;
-import lombok.RequiredArgsConstructor;
+import rmm.ninjaone.buildingblocks.application.bases.BaseHandler;
+import rmm.ninjaone.buildingblocks.application.support.UserContext;
 import rmm.ninjaone.catalog.domain.contracts.devices.DeviceSrv;
 import rmm.ninjaone.catalog.domain.contracts.subscriptions.SubscriptionSrv;
 import rmm.ninjaone.catalog.domain.models.Subscription;
 
 @Component
-@RequiredArgsConstructor
-public class CreateDeviceHandler implements Command.Handler<CreateDeviceCommand, CreateDeviceResult> {
+public class CreateDeviceHandler extends BaseHandler<CreateDeviceCommand, CreateDeviceResult> {
     private final DeviceSrv deviceSrv;
     private final SubscriptionSrv subscriptionSrv;
+
+    public CreateDeviceHandler(UserContext context, DeviceSrv deviceSrv, SubscriptionSrv subscriptionSrv) {
+        super(context);
+        this.deviceSrv = deviceSrv;
+        this.subscriptionSrv = subscriptionSrv;
+    }
 
     @Override
     public CreateDeviceResult handle(CreateDeviceCommand command) {

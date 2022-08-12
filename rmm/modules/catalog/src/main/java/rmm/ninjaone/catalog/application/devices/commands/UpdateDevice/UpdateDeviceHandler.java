@@ -2,14 +2,18 @@ package rmm.ninjaone.catalog.application.devices.commands.UpdateDevice;
 
 import org.springframework.stereotype.Component;
 
-import an.awesome.pipelinr.Command;
-import lombok.RequiredArgsConstructor;
+import rmm.ninjaone.buildingblocks.application.bases.BaseHandler;
+import rmm.ninjaone.buildingblocks.application.support.UserContext;
 import rmm.ninjaone.catalog.domain.contracts.devices.DeviceSrv;
 
 @Component
-@RequiredArgsConstructor
-public class UpdateDeviceHandler implements Command.Handler<UpdateDeviceCommand, UpdateDeviceResult> {
+public class UpdateDeviceHandler extends BaseHandler<UpdateDeviceCommand, UpdateDeviceResult> {
     private final DeviceSrv deviceSrv;
+
+    public UpdateDeviceHandler(UserContext context, DeviceSrv deviceSrv) {
+        super(context);
+        this.deviceSrv = deviceSrv;
+    }
 
     @Override
     public UpdateDeviceResult handle(UpdateDeviceCommand command) {

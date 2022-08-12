@@ -2,14 +2,18 @@ package rmm.ninjaone.catalog.application.devices.commands.DeleteDevice;
 
 import org.springframework.stereotype.Component;
 
-import an.awesome.pipelinr.Command;
-import lombok.RequiredArgsConstructor;
+import rmm.ninjaone.buildingblocks.application.bases.BaseHandler;
+import rmm.ninjaone.buildingblocks.application.support.UserContext;
 import rmm.ninjaone.catalog.domain.contracts.devices.DeviceSrv;
 
 @Component
-@RequiredArgsConstructor
-public class DeleteDeviceHandler implements Command.Handler<DeleteDeviceCommand, DeleteDeviceResult> {
+public class DeleteDeviceHandler extends BaseHandler<DeleteDeviceCommand, DeleteDeviceResult> {
     private final DeviceSrv deviceSrv;
+
+    public DeleteDeviceHandler(UserContext context, DeviceSrv deviceSrv) {
+        super(context);
+        this.deviceSrv = deviceSrv;
+    }
 
     @Override
     public DeleteDeviceResult handle(DeleteDeviceCommand command) {

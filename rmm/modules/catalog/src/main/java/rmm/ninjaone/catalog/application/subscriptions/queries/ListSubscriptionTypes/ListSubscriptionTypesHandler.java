@@ -2,14 +2,18 @@ package rmm.ninjaone.catalog.application.subscriptions.queries.ListSubscriptionT
 
 import org.springframework.stereotype.Component;
 
-import an.awesome.pipelinr.Command;
-import lombok.RequiredArgsConstructor;
+import rmm.ninjaone.buildingblocks.application.bases.BaseHandler;
+import rmm.ninjaone.buildingblocks.application.support.UserContext;
 import rmm.ninjaone.catalog.domain.contracts.subscriptions.SubscriptionSrv;
 
 @Component
-@RequiredArgsConstructor
-public class ListSubscriptionTypesHandler implements Command.Handler<ListSubscriptionTypesQuery, ListSubscriptionTypesResult> {
+public class ListSubscriptionTypesHandler extends BaseHandler<ListSubscriptionTypesQuery, ListSubscriptionTypesResult> {
     private final SubscriptionSrv subscriptionSrv;
+
+    public ListSubscriptionTypesHandler(UserContext context, SubscriptionSrv subscriptionSrv) {
+        super(context);
+        this.subscriptionSrv = subscriptionSrv;
+    }
 
     @Override
     public ListSubscriptionTypesResult handle(ListSubscriptionTypesQuery command) {

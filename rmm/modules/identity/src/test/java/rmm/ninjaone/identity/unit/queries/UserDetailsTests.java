@@ -15,6 +15,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.jpa.domain.Specification;
 
+import rmm.ninjaone.buildingblocks.application.support.UserContext;
 import rmm.ninjaone.identity.application.queries.UserDetails.UserDetailsHandler;
 import rmm.ninjaone.identity.data.RmmUserMother;
 import rmm.ninjaone.identity.data.UserDetailsMother;
@@ -26,12 +27,15 @@ public class UserDetailsTests {
     @Mock
     RmmUserRepository repository;
 
+    @Mock
+    UserContext userContext;
+
     UserDetailsHandler handler;
 
     @BeforeEach
     void setUp() {
         Mockito.reset(repository);
-        handler = new UserDetailsHandler(repository);
+        handler = new UserDetailsHandler(userContext, repository);
     }
 
     @Test

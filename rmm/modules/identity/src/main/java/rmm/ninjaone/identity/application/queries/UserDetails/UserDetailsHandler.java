@@ -2,8 +2,8 @@ package rmm.ninjaone.identity.application.queries.UserDetails;
 
 import org.springframework.stereotype.Component;
 
-import an.awesome.pipelinr.Command;
-import lombok.RequiredArgsConstructor;
+import rmm.ninjaone.buildingblocks.application.bases.BaseHandler;
+import rmm.ninjaone.buildingblocks.application.support.UserContext;
 import rmm.ninjaone.buildingblocks.domain.valueObjects.Email;
 import rmm.ninjaone.identity.domain.contracts.RmmUserRepository;
 import rmm.ninjaone.identity.domain.exceptions.UserNotFoundException;
@@ -11,9 +11,13 @@ import rmm.ninjaone.identity.domain.models.RmmUser;
 import rmm.ninjaone.identity.domain.specifications.UserSpecifications;
 
 @Component
-@RequiredArgsConstructor
-public class UserDetailsHandler implements Command.Handler<UserDetailsQuery, UserDetailsResult> {
+public class UserDetailsHandler extends BaseHandler<UserDetailsQuery, UserDetailsResult> {
     private final RmmUserRepository repository;
+
+    public UserDetailsHandler(UserContext context, RmmUserRepository repository) {
+        super(context);
+        this.repository = repository;
+    }
 
     @Override
     public UserDetailsResult handle(UserDetailsQuery command) {

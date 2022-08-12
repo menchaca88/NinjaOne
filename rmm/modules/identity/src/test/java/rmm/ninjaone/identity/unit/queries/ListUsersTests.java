@@ -9,6 +9,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import rmm.ninjaone.buildingblocks.application.support.UserContext;
 import rmm.ninjaone.identity.application.queries.ListUsers.ListUsersHandler;
 import rmm.ninjaone.identity.application.queries.ListUsers.ListUsersQuery;
 import rmm.ninjaone.identity.data.RmmUserMother;
@@ -19,12 +20,15 @@ public class ListUsersTests {
     @Mock
     RmmUserRepository repository;
 
+    @Mock
+    UserContext userContext;
+
     ListUsersHandler handler;
 
     @BeforeEach
     void setUp() {
         Mockito.reset(repository);
-        handler = new ListUsersHandler(repository);
+        handler = new ListUsersHandler(userContext, repository);
     }
 
     @Test

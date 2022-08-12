@@ -2,14 +2,18 @@ package rmm.ninjaone.catalog.application.services.commands.DeleteService;
 
 import org.springframework.stereotype.Component;
 
-import an.awesome.pipelinr.Command;
-import lombok.RequiredArgsConstructor;
+import rmm.ninjaone.buildingblocks.application.bases.BaseHandler;
+import rmm.ninjaone.buildingblocks.application.support.UserContext;
 import rmm.ninjaone.catalog.domain.contracts.services.ServiceSrv;
 
 @Component
-@RequiredArgsConstructor
-public class DeleteServiceHandler implements Command.Handler<DeleteServiceCommand, DeleteServiceResult> {
+public class DeleteServiceHandler extends BaseHandler<DeleteServiceCommand, DeleteServiceResult> {
     private final ServiceSrv serviceSrv;
+
+    public DeleteServiceHandler(UserContext context, ServiceSrv serviceSrv) {
+        super(context);
+        this.serviceSrv = serviceSrv;
+    }
 
     @Override
     public DeleteServiceResult handle(DeleteServiceCommand command) {

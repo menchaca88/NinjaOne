@@ -2,9 +2,9 @@ package rmm.ninjaone.identity.application.commands.CreateUser;
 
 import org.springframework.stereotype.Component;
 
-import an.awesome.pipelinr.Command;
-import lombok.RequiredArgsConstructor;
+import rmm.ninjaone.buildingblocks.application.bases.BaseHandler;
 import rmm.ninjaone.buildingblocks.application.contracts.PasswordEncrypter;
+import rmm.ninjaone.buildingblocks.application.support.UserContext;
 import rmm.ninjaone.buildingblocks.domain.valueObjects.Email;
 import rmm.ninjaone.identity.domain.contracts.RmmUserRepository;
 import rmm.ninjaone.identity.domain.exceptions.UserAlreadyExistsException;
@@ -13,10 +13,15 @@ import rmm.ninjaone.identity.domain.models.RmmUser;
 import rmm.ninjaone.identity.domain.specifications.UserSpecifications;
 
 @Component
-@RequiredArgsConstructor
-public class CreateUserHandler implements Command.Handler<CreateUserCommand, CreateUserResult> {
+public class CreateUserHandler extends BaseHandler<CreateUserCommand, CreateUserResult> {
     private final RmmUserRepository repository;
     private final PasswordEncrypter passwordEncrypter;
+
+    public CreateUserHandler(UserContext context, RmmUserRepository repository, PasswordEncrypter passwordEncrypter) {
+        super(context);
+        this.repository = repository;
+        this.passwordEncrypter = passwordEncrypter;
+    }
 
     @Override
     public CreateUserResult handle(CreateUserCommand command) {

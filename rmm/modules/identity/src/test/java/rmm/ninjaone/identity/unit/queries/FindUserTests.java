@@ -14,6 +14,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.jpa.domain.Specification;
 
+import rmm.ninjaone.buildingblocks.application.support.UserContext;
 import rmm.ninjaone.identity.application.queries.FindUser.FindUserHandler;
 import rmm.ninjaone.identity.data.FindUserMother;
 import rmm.ninjaone.identity.data.RmmUserMother;
@@ -24,12 +25,15 @@ public class FindUserTests {
     @Mock
     RmmUserRepository repository;
 
+    @Mock
+    UserContext userContext;
+
     FindUserHandler handler;
 
     @BeforeEach
     void setUp() {
         Mockito.reset(repository);
-        handler = new FindUserHandler(repository);
+        handler = new FindUserHandler(userContext, repository);
     }
 
     @Test

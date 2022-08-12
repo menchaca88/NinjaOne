@@ -2,16 +2,20 @@ package rmm.ninjaone.catalog.application.services.queries.ServiceDetails;
 
 import org.springframework.stereotype.Component;
 
-import an.awesome.pipelinr.Command;
-import lombok.RequiredArgsConstructor;
+import rmm.ninjaone.buildingblocks.application.bases.BaseHandler;
+import rmm.ninjaone.buildingblocks.application.support.UserContext;
 import rmm.ninjaone.buildingblocks.domain.valueObjects.Sku;
 import rmm.ninjaone.catalog.domain.contracts.services.ServiceSrv;
 import rmm.ninjaone.catalog.domain.models.services.Service;
 
 @Component
-@RequiredArgsConstructor
-public class ServiceDetailsHandler implements Command.Handler<ServiceDetailsQuery, ServiceDetailsResult> {
+public class ServiceDetailsHandler extends BaseHandler<ServiceDetailsQuery, ServiceDetailsResult> {
     private final ServiceSrv serviceSrv;
+
+    public ServiceDetailsHandler(UserContext context, ServiceSrv serviceSrv) {
+        super(context);
+        this.serviceSrv = serviceSrv;
+    }
 
     @Override
     public ServiceDetailsResult handle(ServiceDetailsQuery command) {

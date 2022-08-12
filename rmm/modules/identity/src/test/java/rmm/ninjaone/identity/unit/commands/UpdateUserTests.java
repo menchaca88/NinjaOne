@@ -17,6 +17,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.jpa.domain.Specification;
 
 import rmm.ninjaone.buildingblocks.application.contracts.PasswordEncrypter;
+import rmm.ninjaone.buildingblocks.application.support.UserContext;
 import rmm.ninjaone.identity.application.commands.UpdateUser.UpdateUserHandler;
 import rmm.ninjaone.identity.data.RmmUserMother;
 import rmm.ninjaone.identity.data.UpdateUserMother;
@@ -32,6 +33,9 @@ public class UpdateUserTests {
     @Mock
     PasswordEncrypter encrypter;
 
+    @Mock
+    UserContext userContext;
+
     UpdateUserHandler handler;
 
     @BeforeEach
@@ -42,7 +46,7 @@ public class UpdateUserTests {
         Mockito.lenient().when(repository.save(any())).thenAnswer(x -> x.getArgument(0));
         Mockito.lenient().when(encrypter.encode(any())).thenAnswer(x -> x.getArgument(0));
 
-        handler = new UpdateUserHandler(repository, encrypter);
+        handler = new UpdateUserHandler(userContext, repository, encrypter);
     }
 
     @Test

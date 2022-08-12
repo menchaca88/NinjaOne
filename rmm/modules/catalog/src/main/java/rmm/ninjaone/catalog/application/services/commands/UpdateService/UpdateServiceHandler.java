@@ -2,14 +2,18 @@ package rmm.ninjaone.catalog.application.services.commands.UpdateService;
 
 import org.springframework.stereotype.Component;
 
-import an.awesome.pipelinr.Command;
-import lombok.RequiredArgsConstructor;
+import rmm.ninjaone.buildingblocks.application.bases.BaseHandler;
+import rmm.ninjaone.buildingblocks.application.support.UserContext;
 import rmm.ninjaone.catalog.domain.contracts.services.ServiceSrv;
 
 @Component
-@RequiredArgsConstructor
-public class UpdateServiceHandler implements Command.Handler<UpdateServiceCommand, UpdateServiceResult> {
+public class UpdateServiceHandler extends BaseHandler<UpdateServiceCommand, UpdateServiceResult> {
     private final ServiceSrv serviceSrv;
+
+    public UpdateServiceHandler(UserContext context, ServiceSrv serviceSrv) {
+        super(context);
+        this.serviceSrv = serviceSrv;
+    }
 
     @Override
     public UpdateServiceResult handle(UpdateServiceCommand command) {

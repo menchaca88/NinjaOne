@@ -2,17 +2,22 @@ package rmm.ninjaone.catalog.application.services.commands.CreateService;
 
 import org.springframework.stereotype.Component;
 
-import an.awesome.pipelinr.Command;
-import lombok.RequiredArgsConstructor;
+import rmm.ninjaone.buildingblocks.application.bases.BaseHandler;
+import rmm.ninjaone.buildingblocks.application.support.UserContext;
 import rmm.ninjaone.catalog.domain.contracts.services.ServiceSrv;
 import rmm.ninjaone.catalog.domain.contracts.subscriptions.SubscriptionSrv;
 import rmm.ninjaone.catalog.domain.models.Subscription;
 
 @Component
-@RequiredArgsConstructor
-public class CreateServiceHandler implements Command.Handler<CreateServiceCommand, CreateServiceResult> {
+public class CreateServiceHandler extends BaseHandler<CreateServiceCommand, CreateServiceResult> {
     private final ServiceSrv serviceSrv;
     private final SubscriptionSrv subscriptionSrv;
+
+    public CreateServiceHandler(UserContext context, ServiceSrv serviceSrv, SubscriptionSrv subscriptionSrv) {
+        super(context);
+        this.serviceSrv = serviceSrv;
+        this.subscriptionSrv = subscriptionSrv;
+    }
 
     @Override
     public CreateServiceResult handle(CreateServiceCommand command) {

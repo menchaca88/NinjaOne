@@ -2,14 +2,18 @@ package rmm.ninjaone.identity.application.queries.ListUsers;
 
 import org.springframework.stereotype.Component;
 
-import an.awesome.pipelinr.Command;
-import lombok.RequiredArgsConstructor;
+import rmm.ninjaone.buildingblocks.application.bases.BaseHandler;
+import rmm.ninjaone.buildingblocks.application.support.UserContext;
 import rmm.ninjaone.identity.domain.contracts.RmmUserRepository;
 
 @Component
-@RequiredArgsConstructor
-public class ListUsersHandler implements Command.Handler<ListUsersQuery, ListUsersResult> {
+public class ListUsersHandler extends BaseHandler<ListUsersQuery, ListUsersResult> {
     private final RmmUserRepository repository;
+
+    public ListUsersHandler(UserContext context, RmmUserRepository repository) {
+        super(context);
+        this.repository = repository;
+    }
 
     @Override
     public ListUsersResult handle(ListUsersQuery command) {

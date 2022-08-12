@@ -1,4 +1,4 @@
-package rmm.ninjaone.buildingblocks.application.models;
+package rmm.ninjaone.buildingblocks.application.bases;
 
 import java.util.Date;
 

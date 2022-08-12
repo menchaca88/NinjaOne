@@ -15,6 +15,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.jpa.domain.Specification;
 
+import rmm.ninjaone.buildingblocks.application.support.UserContext;
 import rmm.ninjaone.identity.application.commands.DeleteUser.DeleteUserHandler;
 import rmm.ninjaone.identity.data.DeleteUserMother;
 import rmm.ninjaone.identity.data.RmmUserMother;
@@ -26,12 +27,15 @@ public class DeleteUserTests {
     @Mock
     RmmUserRepository repository;
 
+    @Mock
+    UserContext userContext;
+
     DeleteUserHandler handler;
 
     @BeforeEach
     void setUp() {
         Mockito.reset(repository);
-        handler = new DeleteUserHandler(repository);
+        handler = new DeleteUserHandler(userContext, repository);
     }
 
     @Test

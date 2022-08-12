@@ -15,6 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.jpa.domain.Specification;
 
 import rmm.ninjaone.buildingblocks.application.contracts.PasswordEncrypter;
+import rmm.ninjaone.buildingblocks.application.support.UserContext;
 import rmm.ninjaone.identity.application.commands.CreateUser.CreateUserHandler;
 import rmm.ninjaone.identity.data.CreateUserMother;
 import rmm.ninjaone.identity.domain.contracts.RmmUserRepository;
@@ -29,6 +30,9 @@ public class CreateUserTests {
     @Mock
     PasswordEncrypter encrypter;
 
+    @Mock
+    UserContext userContext;
+
     CreateUserHandler handler;
 
     @BeforeEach
@@ -39,7 +43,7 @@ public class CreateUserTests {
         Mockito.lenient().when(repository.save(any())).thenAnswer(x -> x.getArgument(0));
         Mockito.lenient().when(encrypter.encode(any())).thenAnswer(x -> x.getArgument(0));
 
-        handler = new CreateUserHandler(repository, encrypter);
+        handler = new CreateUserHandler(userContext, repository, encrypter);
     }
 
     @Test

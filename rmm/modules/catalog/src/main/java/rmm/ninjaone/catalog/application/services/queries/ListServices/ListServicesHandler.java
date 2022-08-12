@@ -2,14 +2,18 @@ package rmm.ninjaone.catalog.application.services.queries.ListServices;
 
 import org.springframework.stereotype.Component;
 
-import an.awesome.pipelinr.Command;
-import lombok.RequiredArgsConstructor;
+import rmm.ninjaone.buildingblocks.application.bases.BaseHandler;
+import rmm.ninjaone.buildingblocks.application.support.UserContext;
 import rmm.ninjaone.catalog.domain.contracts.services.ServiceSrv;
 
 @Component
-@RequiredArgsConstructor
-public class ListServicesHandler implements Command.Handler<ListServicesQuery, ListServicesResult> {
+public class ListServicesHandler extends BaseHandler<ListServicesQuery, ListServicesResult> {
     private final ServiceSrv serviceSrv;
+
+    public ListServicesHandler(UserContext context, ServiceSrv serviceSrv) {
+        super(context);
+        this.serviceSrv = serviceSrv;
+    }
 
     @Override
     public ListServicesResult handle(ListServicesQuery command) {
