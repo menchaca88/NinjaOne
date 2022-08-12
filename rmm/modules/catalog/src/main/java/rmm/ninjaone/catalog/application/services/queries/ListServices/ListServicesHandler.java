@@ -4,7 +4,7 @@ import org.springframework.stereotype.Component;
 
 import an.awesome.pipelinr.Command;
 import lombok.RequiredArgsConstructor;
-import rmm.ninjaone.catalog.domain.contracts.ServiceSrv;
+import rmm.ninjaone.catalog.domain.contracts.services.ServiceSrv;
 
 @Component
 @RequiredArgsConstructor
@@ -22,6 +22,7 @@ public class ListServicesHandler implements Command.Handler<ListServicesQuery, L
                 service.setId(u.getId());
                 service.setName(u.getName());
                 service.setSku(u.getSku().getRaw());
+                service.setSubscription(u.getSubscription().getName());
 
                 return service;
             })

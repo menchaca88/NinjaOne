@@ -4,7 +4,7 @@ import org.springframework.stereotype.Component;
 
 import an.awesome.pipelinr.Command;
 import lombok.RequiredArgsConstructor;
-import rmm.ninjaone.catalog.domain.contracts.SubscriptionSrv;
+import rmm.ninjaone.catalog.domain.contracts.subscriptions.SubscriptionSrv;
 
 @Component
 @RequiredArgsConstructor

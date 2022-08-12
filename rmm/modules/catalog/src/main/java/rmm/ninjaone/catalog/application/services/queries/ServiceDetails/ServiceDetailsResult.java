@@ -12,4 +12,5 @@ public class ServiceDetailsResult extends BaseResult {
     private UUID id;
     private String name;
     private String sku;
+    private String subscription;
 }

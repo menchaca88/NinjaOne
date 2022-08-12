@@ -8,12 +8,17 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public class PerDeviceTypeSubscription extends ServiceSubscription {
+public class PerDeviceTypeServiceSubscription extends ServiceSubscription {
     private final List<Type> types;
 
     @Override
     public boolean relatedTo(UUID deviceId) {
         return types.stream().anyMatch(t -> deviceId.equals(t.getDeviceId()));
+    }
+
+    @Override
+    public List<UUID> getRelatedDevices() {
+        return types.stream().map(t -> t.getDeviceId()).toList();
     }
 
     @Getter

@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public class TieredSubscription extends ServiceSubscription {
+public class TieredServiceSubscription extends ServiceSubscription {
     private final List<Tier> tiers;
 
     @Getter

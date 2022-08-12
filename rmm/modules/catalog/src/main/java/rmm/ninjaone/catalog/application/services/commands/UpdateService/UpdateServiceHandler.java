@@ -4,7 +4,7 @@ import org.springframework.stereotype.Component;
 
 import an.awesome.pipelinr.Command;
 import lombok.RequiredArgsConstructor;
-import rmm.ninjaone.catalog.domain.contracts.ServiceSrv;
+import rmm.ninjaone.catalog.domain.contracts.services.ServiceSrv;
 
 @Component
 @RequiredArgsConstructor
@@ -19,7 +19,8 @@ public class UpdateServiceHandler implements Command.Handler<UpdateServiceComman
         result.setId(service.getId());
         result.setName(service.getName());
         result.setSku(service.getSku().getRaw());
+        result.setSubscription(service.getSubscription().getName());
             
-        return null;
+        return result;
     }
 }

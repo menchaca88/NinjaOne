@@ -20,25 +20,33 @@ import org.springframework.data.jpa.domain.Specification;
 import rmm.ninjaone.buildingblocks.data.StringMother;
 import rmm.ninjaone.catalog.data.ServiceMother;
 import rmm.ninjaone.catalog.data.SubscriptionMother;
-import rmm.ninjaone.catalog.domain.contracts.ServiceRepository;
+import rmm.ninjaone.catalog.domain.contracts.devices.DeviceRepository;
+import rmm.ninjaone.catalog.domain.contracts.services.ServiceRepository;
 import rmm.ninjaone.catalog.domain.exceptions.ServiceAlreadyExistsException;
 import rmm.ninjaone.catalog.domain.exceptions.ServiceNotFoundException;
 import rmm.ninjaone.catalog.domain.models.services.Service;
-import rmm.ninjaone.catalog.domain.services.ServiceSrvImpl;
+import rmm.ninjaone.catalog.infrastructure.services.ServiceSrvImpl;
 
 @ExtendWith(MockitoExtension.class)
 public class ServiceSrvImplTests {
     @Mock
-    ServiceRepository repository;
+    ServiceRepository serviceRepository;
+
+    @Mock
+    DeviceRepository deviceRepository;
 
     ServiceSrvImpl srvImpl;
 
     @BeforeEach
+    @SuppressWarnings("unchecked")
     void setUp() {
-        Mockito.reset(repository);
-        Mockito.lenient().when(repository.save(any())).thenAnswer(x -> x.getArgument(0));
+        Mockito.reset(serviceRepository);
+        Mockito.reset(deviceRepository);
 
-        srvImpl = new ServiceSrvImpl(repository);
+        Mockito.lenient().when(serviceRepository.save(any())).thenAnswer(x -> x.getArgument(0));
+        Mockito.lenient().when(deviceRepository.exists(any(Specification.class))).thenReturn(true);
+
+        srvImpl = new ServiceSrvImpl(deviceRepository, serviceRepository);
     }
 
     @Test
@@ -48,7 +56,7 @@ public class ServiceSrvImplTests {
         var service = ServiceMother.random();
 
         Mockito
-            .when(repository.findOne(any(Specification.class)))
+            .when(serviceRepository.findOne(any(Specification.class)))
             .thenReturn(Optional.of(service));
 
         // Act
@@ -67,7 +75,7 @@ public class ServiceSrvImplTests {
         var service = ServiceMother.random();
 
         Mockito
-            .when(repository.findOne(any(Specification.class)))
+            .when(serviceRepository.findOne(any(Specification.class)))
             .thenReturn(Optional.of(service));
 
         // Act
@@ -85,7 +93,7 @@ public class ServiceSrvImplTests {
         var services = ServiceMother.count(5);
         
         Mockito
-            .when(repository.findAll())
+            .when(serviceRepository.findAll())
             .thenReturn(services);
 
         // Act
@@ -108,14 +116,14 @@ public class ServiceSrvImplTests {
         var subscription = SubscriptionMother.serviceRandom();
         
         Mockito
-            .when(repository.exists(any(Specification.class)))
+            .when(serviceRepository.exists(any(Specification.class)))
             .thenReturn(false);
 
         // Act
         srvImpl.create(name, subscription);
 
         // Assert
-        Mockito.verify(repository).save(argThat((Service d) ->
+        Mockito.verify(serviceRepository).save(argThat((Service d) ->
             d.getName().equals(name)));
     }
 
@@ -127,7 +135,7 @@ public class ServiceSrvImplTests {
         var subscription = SubscriptionMother.serviceRandom();
         
         Mockito
-            .when(repository.exists(any(Specification.class)))
+            .when(serviceRepository.exists(any(Specification.class)))
             .thenReturn(false);
 
         // Act
@@ -145,7 +153,7 @@ public class ServiceSrvImplTests {
         var subscription = SubscriptionMother.serviceRandom();
 
         Mockito
-            .when(repository.exists(any(Specification.class)))
+            .when(serviceRepository.exists(any(Specification.class)))
             .thenReturn(true);
 
         // Act
@@ -162,14 +170,14 @@ public class ServiceSrvImplTests {
         var service = ServiceMother.random();
 
         Mockito
-            .when(repository.findOne(any(Specification.class)))
+            .when(serviceRepository.findOne(any(Specification.class)))
             .thenReturn(Optional.of(service));
 
         // Act
         srvImpl.delete(service.getId());
 
         // Assert
-        Mockito.verify(repository).delete(service);
+        Mockito.verify(serviceRepository).delete(service);
     }
 
     @Test
@@ -179,7 +187,7 @@ public class ServiceSrvImplTests {
         var service = ServiceMother.random();
 
         Mockito
-            .when(repository.findOne(any(Specification.class)))
+            .when(serviceRepository.findOne(any(Specification.class)))
             .thenReturn(Optional.of(service));
 
         // Act
@@ -198,7 +206,7 @@ public class ServiceSrvImplTests {
         var serviceId = UUID.randomUUID();
 
         Mockito
-            .when(repository.findOne(any(Specification.class)))
+            .when(serviceRepository.findOne(any(Specification.class)))
             .thenReturn(Optional.empty());
 
         // Act
@@ -216,14 +224,14 @@ public class ServiceSrvImplTests {
         var service = ServiceMother.random();
 
         Mockito
-            .when(repository.findOne(any(Specification.class)))
+            .when(serviceRepository.findOne(any(Specification.class)))
             .thenReturn(Optional.of(service));
 
         // Act
         srvImpl.update(service.getId(), name);
 
         // Assert
-        Mockito.verify(repository).save(argThat((Service d) ->
+        Mockito.verify(serviceRepository).save(argThat((Service d) ->
             d.getId().equals(service.getId()) &&
             d.getName().equals(name)));
     }
@@ -236,7 +244,7 @@ public class ServiceSrvImplTests {
         var service = ServiceMother.random();
 
         Mockito
-            .when(repository.findOne(any(Specification.class)))
+            .when(serviceRepository.findOne(any(Specification.class)))
             .thenReturn(Optional.of(service));
 
         // Act
@@ -256,7 +264,7 @@ public class ServiceSrvImplTests {
         var serviceId = UUID.randomUUID();
 
         Mockito
-            .when(repository.findOne(any(Specification.class)))
+            .when(serviceRepository.findOne(any(Specification.class)))
             .thenReturn(Optional.empty());
 
         // Act

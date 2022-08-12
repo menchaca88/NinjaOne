@@ -10,7 +10,7 @@ public class SubscriptionMother extends ObjectMother {
     }
 
     public static DeviceSubscription deviceMonthlyFixed() {
-        var subscription = new rmm.ninjaone.catalog.domain.models.devices.subscriptions.MonthlyFixedSubscription(random.nextDouble());
+        var subscription = new rmm.ninjaone.catalog.domain.models.devices.subscriptions.MonthlyFixedDeviceSubscription(random.nextDouble());
 
         return subscription;
     }
@@ -20,7 +20,7 @@ public class SubscriptionMother extends ObjectMother {
     }
  
      public static ServiceSubscription serviceMonthlyFixed() {
-        var subscription = new rmm.ninjaone.catalog.domain.models.services.subscriptions.MonthlyFixedSubscription(random.nextDouble());
+        var subscription = new rmm.ninjaone.catalog.domain.models.services.subscriptions.MonthlyFixedServiceSubscription(random.nextDouble());
 
         return subscription;
     }

@@ -49,6 +49,8 @@ public class ServicesController extends BaseController {
     public ResponseEntity<ServiceResponse> create(@Valid @RequestBody CreateServiceRequest request) {
         var command = new CreateServiceCommand();
         command.setName(request.getName());
+        command.setSubscriptionType(request.getSubscription().getType());
+        command.setSubscriptionData(request.getSubscription().getData());
 
         var result = pipeline.send(command);
         var response = modelMapper.map(result, ServiceResponse.class);
