@@ -15,7 +15,7 @@ public abstract class Event implements Notification {
     private UUID uuid;
     private Date occurredOn;
 
-    public Event(UUID entityID) {
+    public Event(UUID entityId) {
         setEntityId(entityId);
         setUuid(UUID.randomUUID());
         setOccurredOn(new Date());

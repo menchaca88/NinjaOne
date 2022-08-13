@@ -9,21 +9,18 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.util.NestedServletException;
 
-import lombok.RequiredArgsConstructor;
 import rmm.ninjaone.api.support.exceptions.ErrorCodes;
 import rmm.ninjaone.api.support.exceptions.ErrorResponse;
 
-@ControllerAdvice
-@RequiredArgsConstructor
-public class GeneralExceptionsHandler {
-    private final MessageSource messageSource;
+public interface GeneralExceptionsHandler {
+    MessageSource messageSource();
 
     @ExceptionHandler(value = { Exception.class })
-    public ResponseEntity<ErrorResponse> handleAnyException(Exception ex, WebRequest request) {
+    public default ResponseEntity<ErrorResponse> handleAnyException(Exception ex, WebRequest request) {
         String message = ex.getLocalizedMessage();
         if (message == null || message.isEmpty())
             message = ex.toString();
@@ -34,8 +31,8 @@ public class GeneralExceptionsHandler {
     }
 
     @ExceptionHandler(value = { HttpMessageNotReadableException.class })
-    public ResponseEntity<ErrorResponse> handleJsonMappingException(HttpMessageNotReadableException ex, WebRequest request, Locale locale) {
-        var message = messageSource.getMessage("errors.payload.invalid", null, locale);
+    public default ResponseEntity<ErrorResponse> handleJsonMappingException(HttpMessageNotReadableException ex, WebRequest request, Locale locale) {
+        var message = messageSource().getMessage("errors.payload.invalid", null, locale);
             
         ErrorResponse response = new ErrorResponse(message, ErrorCodes.BAD_REQUEST);
         
@@ -43,7 +40,7 @@ public class GeneralExceptionsHandler {
     }
 
     @ExceptionHandler(value = { MethodArgumentNotValidException.class })
-    public ResponseEntity<ErrorResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex, WebRequest request) {
+    public default ResponseEntity<ErrorResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex, WebRequest request) {
         var message = ex.getFieldError().getDefaultMessage();
 
         ErrorResponse response = new ErrorResponse(message, ErrorCodes.BAD_REQUEST);
@@ -52,7 +49,7 @@ public class GeneralExceptionsHandler {
     }
 
     @ExceptionHandler(value = { IllegalArgumentException.class })
-    public ResponseEntity<ErrorResponse> handleIllegalArgumentException(IllegalArgumentException ex, WebRequest request) {
+    public default ResponseEntity<ErrorResponse> handleIllegalArgumentException(IllegalArgumentException ex, WebRequest request) {
         String message = ex.getLocalizedMessage();
         if (message == null || message.isEmpty())
             message = ex.toString();
@@ -63,7 +60,7 @@ public class GeneralExceptionsHandler {
     }
 
     @ExceptionHandler(value = { ConstraintViolationException.class })
-    public ResponseEntity<ErrorResponse> handleConstraintViolationException(ConstraintViolationException ex, WebRequest request) {
+    public default ResponseEntity<ErrorResponse> handleConstraintViolationException(ConstraintViolationException ex, WebRequest request) {
         String message = ex.getLocalizedMessage();
         if (message == null || message.isEmpty())
             message = ex.toString();
@@ -74,7 +71,7 @@ public class GeneralExceptionsHandler {
     }
 
     @ExceptionHandler(value = { AssertionError.class })
-    public ResponseEntity<ErrorResponse> handleAssertionError(AssertionError ex, WebRequest request) {
+    public default ResponseEntity<ErrorResponse> handleAssertionError(AssertionError ex, WebRequest request) {
         String message = ex.getLocalizedMessage();
         if (message == null || message.isEmpty())
             message = ex.toString();
@@ -82,5 +79,13 @@ public class GeneralExceptionsHandler {
         ErrorResponse response = new ErrorResponse(message, ErrorCodes.BAD_REQUEST);
         
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST); 
+    }
+
+    @ExceptionHandler(value = { NestedServletException.class })
+    public default ResponseEntity<ErrorResponse> handleNestedServletException(NestedServletException ex, WebRequest request) {
+        if (ex.getCause() instanceof AssertionError) 
+            return handleAssertionError((AssertionError)ex.getCause(), request);
+        
+        return handleAnyException(ex, request); 
     }
 }
