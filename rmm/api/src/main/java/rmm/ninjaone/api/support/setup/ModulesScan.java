@@ -10,17 +10,20 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
     "rmm.ninjaone.buildingblocks",
     "rmm.ninjaone.identity",
     "rmm.ninjaone.catalog",
-    "rmm.ninjaone.inventory"
+    "rmm.ninjaone.inventory",
+    "rmm.ninjaone.invoices",
 })
 @EnableJpaRepositories({ 
     "rmm.ninjaone.buildingblocks",
     "rmm.ninjaone.identity",
     "rmm.ninjaone.catalog",
-    "rmm.ninjaone.inventory"
+    "rmm.ninjaone.inventory",
+    "rmm.ninjaone.invoices",
 })
 @ComponentScan("rmm.ninjaone.identity")
 @ComponentScan("rmm.ninjaone.catalog")
 @ComponentScan("rmm.ninjaone.inventory")
+@ComponentScan("rmm.ninjaone.invoices")
 @ComponentScan("rmm.ninjaone.buildingblocks")
 public class ModulesScan {
 }

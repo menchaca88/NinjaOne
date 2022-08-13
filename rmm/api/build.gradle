@@ -9,6 +9,9 @@ dependencies {
     implementation project(':modules:catalog')
     implementation project(':modules:inventory')
 
+
+    implementation project(':modules:invoices')
+
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
 

@@ -10,10 +10,11 @@ import lombok.Data;
 @ConfigurationProperties(prefix = "api")
 public class ApiUrls {
     private String prefix;
+    private String login;
+    private String register;
     private String users;
     private String catalog;
     private String inventory;
+    private String invoices;
     private String docs;
-    private String login;
-    private String register;
 }

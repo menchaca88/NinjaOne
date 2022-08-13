@@ -4,3 +4,6 @@ include 'building-blocks'
 include 'modules:identity'
 include 'modules:catalog'
 include 'modules:inventory'
+
+
+include 'modules:invoices'

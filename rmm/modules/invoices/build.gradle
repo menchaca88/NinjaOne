@@ -1,0 +1,14 @@
+dependencies {
+    implementation project(':building-blocks')
+
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    implementation 'net.sizovs:pipelinr:0.7'
+
+    implementation 'org.hibernate.validator:hibernate-validator'
+    
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+}

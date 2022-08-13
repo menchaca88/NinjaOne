@@ -81,7 +81,7 @@ public class WebSecurityConfig {
                     .permitAll()
                 .antMatchers(allPaths(apiUrls.getUsers()), allPaths(apiUrls.getCatalog()))
                     .hasAuthority(Authorities.Admin)
-                .antMatchers(allPaths(apiUrls.getInventory()))
+                .antMatchers(allPaths(apiUrls.getInventory()), allPaths(apiUrls.getInvoices()))
                     .hasAuthority(Authorities.User)
                 .anyRequest()
                     .hasAnyAuthority(Authorities.All)
