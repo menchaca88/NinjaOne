@@ -16,6 +16,10 @@ import lombok.Setter;
 public class AggregateRoot extends AbstractAggregateRoot<AggregateRoot> {
     @Getter @Setter @Id @Type(type="uuid-char") private UUID id;
 
+    protected AggregateRoot(UUID id) {
+        this.id = id;
+    }
+
     protected AggregateRoot() {
         id = UUID.randomUUID();
     }
