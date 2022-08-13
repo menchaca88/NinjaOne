@@ -5,24 +5,24 @@ import java.util.UUID;
 import org.springframework.data.jpa.domain.Specification;
 
 import rmm.ninjaone.buildingblocks.domain.valueObjects.Sku;
-import rmm.ninjaone.catalog.domain.models.services.Service;
+import rmm.ninjaone.catalog.domain.models.services.ServiceType;
 
 public interface ServiceSpecifications {
-    public static Specification<Service> findById(UUID id) {
+    public static Specification<ServiceType> findById(UUID id) {
         return (root, query, cb) -> cb.equal(root.get("id"), id);
     }
 
-    public static Specification<Service> findByName(String name) {
+    public static Specification<ServiceType> findByName(String name) {
         return (root, query, cb) -> cb.equal(root.get("name"), name);
     }
 
-    public static Specification<Service> findByNameExcept(String name, UUID exceptId) {
+    public static Specification<ServiceType> findByNameExcept(String name, UUID exceptId) {
         return (root, query, cb) -> cb.and(
             cb.equal(root.get("name"), name),
             cb.notEqual(root.get("id"), exceptId));
     }
     
-    public static Specification<Service> findBySku(Sku sku) {
+    public static Specification<ServiceType> findBySku(Sku sku) {
         return (root, query, cb) -> cb.equal(root.get("sku"), sku);
     }
 }

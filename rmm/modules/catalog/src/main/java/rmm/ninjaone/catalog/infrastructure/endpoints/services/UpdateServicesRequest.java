@@ -9,7 +9,7 @@ import lombok.Data;
 
 @Data
 public class UpdateServicesRequest {
-    @NotNull
+    @NotNull(message = "{errors.identifier.required}")
     private UUID id;
     @NotBlank(message = "{errors.name.required}")
     private String name;

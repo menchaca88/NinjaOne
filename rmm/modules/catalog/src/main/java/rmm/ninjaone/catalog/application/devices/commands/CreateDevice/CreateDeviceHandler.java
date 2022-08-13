@@ -8,7 +8,7 @@ import rmm.ninjaone.catalog.domain.contracts.devices.DeviceSrv;
 import rmm.ninjaone.catalog.domain.contracts.subscriptions.SubscriptionSrv;
 import rmm.ninjaone.catalog.domain.models.Subscription;
 
-@Component
+@Component("CreateDeviceTypeHandler")
 public class CreateDeviceHandler extends BaseHandler<CreateDeviceCommand, CreateDeviceResult> {
     private final DeviceSrv deviceSrv;
     private final SubscriptionSrv subscriptionSrv;

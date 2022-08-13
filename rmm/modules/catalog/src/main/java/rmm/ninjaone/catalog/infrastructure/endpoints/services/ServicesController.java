@@ -21,7 +21,7 @@ import rmm.ninjaone.catalog.application.services.commands.UpdateService.UpdateSe
 import rmm.ninjaone.catalog.application.services.queries.ServiceDetails.ServiceDetailsQuery;
 import rmm.ninjaone.catalog.application.services.queries.ListServices.ListServicesQuery;
 
-@RestController
+@RestController("ServiceTypesController")
 @RequestMapping(path = "${api.catalog}/services")
 public class ServicesController extends BaseController {
     @GetMapping()

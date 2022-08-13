@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 import rmm.ninjaone.buildingblocks.application.bases.BaseValidator;
 
-@Component
+@Component("ServiceTypeDetailsValidator")
 public class ServiceDetailsValidator extends BaseValidator<ServiceDetailsQuery, ServiceDetailsResult> {
 
     public ServiceDetailsValidator(Validator validator) {
@@ -18,7 +18,6 @@ public class ServiceDetailsValidator extends BaseValidator<ServiceDetailsQuery, 
 
     @Override
     public void validate(ServiceDetailsQuery command) {
-
         var hasId = new Condition<ServiceDetailsQuery>(m -> m.getId() != null, "Id");
         var hasEmail = new Condition<ServiceDetailsQuery>(m -> m.getSku() != null, "Sku");
         

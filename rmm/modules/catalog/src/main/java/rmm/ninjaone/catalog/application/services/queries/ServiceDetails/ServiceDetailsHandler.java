@@ -6,9 +6,9 @@ import rmm.ninjaone.buildingblocks.application.bases.BaseHandler;
 import rmm.ninjaone.buildingblocks.application.support.UserContext;
 import rmm.ninjaone.buildingblocks.domain.valueObjects.Sku;
 import rmm.ninjaone.catalog.domain.contracts.services.ServiceSrv;
-import rmm.ninjaone.catalog.domain.models.services.Service;
+import rmm.ninjaone.catalog.domain.models.services.ServiceType;
 
-@Component
+@Component("ServiceTypeDetailsHandler")
 public class ServiceDetailsHandler extends BaseHandler<ServiceDetailsQuery, ServiceDetailsResult> {
     private final ServiceSrv serviceSrv;
 
@@ -19,7 +19,7 @@ public class ServiceDetailsHandler extends BaseHandler<ServiceDetailsQuery, Serv
 
     @Override
     public ServiceDetailsResult handle(ServiceDetailsQuery command) {
-        Service service = null;
+        ServiceType service = null;
         
         if (command.getId() != null)
             service = serviceSrv.get(command.getId());

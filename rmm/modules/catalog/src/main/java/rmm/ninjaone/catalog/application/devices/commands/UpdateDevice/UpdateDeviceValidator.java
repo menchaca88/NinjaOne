@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 import rmm.ninjaone.buildingblocks.application.bases.BaseValidator;
 
-@Component
+@Component("UpdateDeviceTypeValidator")
 public class UpdateDeviceValidator extends BaseValidator<UpdateDeviceCommand, UpdateDeviceResult> {
 
     public UpdateDeviceValidator(Validator validator) {

@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 import rmm.ninjaone.buildingblocks.application.bases.BaseValidator;
 
-@Component
+@Component("CreateDeviceTypeValidator")
 public class CreateDeviceValidator extends BaseValidator<CreateDeviceCommand, CreateDeviceResult> {
 
     public CreateDeviceValidator(Validator validator) {

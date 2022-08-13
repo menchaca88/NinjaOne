@@ -6,9 +6,9 @@ import rmm.ninjaone.buildingblocks.application.bases.BaseHandler;
 import rmm.ninjaone.buildingblocks.application.support.UserContext;
 import rmm.ninjaone.buildingblocks.domain.valueObjects.Sku;
 import rmm.ninjaone.catalog.domain.contracts.devices.DeviceSrv;
-import rmm.ninjaone.catalog.domain.models.devices.Device;
+import rmm.ninjaone.catalog.domain.models.devices.DeviceType;
 
-@Component
+@Component("DeviceTypeDetailsHandler")
 public class DeviceDetailsHandler extends BaseHandler<DeviceDetailsQuery, DeviceDetailsResult> {
     private final DeviceSrv deviceSrv;
 
@@ -19,7 +19,7 @@ public class DeviceDetailsHandler extends BaseHandler<DeviceDetailsQuery, Device
 
     @Override
     public DeviceDetailsResult handle(DeviceDetailsQuery command) {
-        Device device = null;
+        DeviceType device = null;
         
         if (command.getId() != null)
             device = deviceSrv.get(command.getId());

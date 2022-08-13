@@ -6,7 +6,7 @@ import rmm.ninjaone.buildingblocks.application.bases.BaseHandler;
 import rmm.ninjaone.buildingblocks.application.support.UserContext;
 import rmm.ninjaone.catalog.domain.contracts.devices.DeviceSrv;
 
-@Component
+@Component("ListDeviceTypesHandler")
 public class ListDevicesHandler extends BaseHandler<ListDevicesQuery, ListDevicesResult> {
     private final DeviceSrv deviceSrv;
 

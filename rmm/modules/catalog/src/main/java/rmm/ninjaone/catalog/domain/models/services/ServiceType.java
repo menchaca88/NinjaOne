@@ -1,4 +1,4 @@
-package rmm.ninjaone.catalog.domain.models.devices;
+package rmm.ninjaone.catalog.domain.models.services;
 
 import javax.persistence.Entity;
 
@@ -6,18 +6,19 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import rmm.ninjaone.buildingblocks.domain.bases.AggregateRoot;
-import rmm.ninjaone.buildingblocks.domain.events.catalog.DeviceDeletedEvent;
+import rmm.ninjaone.buildingblocks.domain.events.catalog.ServiceDeletedEvent;
+import rmm.ninjaone.buildingblocks.domain.events.catalog.ServiceRenamedEvent;
 import rmm.ninjaone.buildingblocks.domain.valueObjects.Sku;
-import rmm.ninjaone.catalog.domain.models.devices.subscriptions.DeviceSubscription;
+import rmm.ninjaone.catalog.domain.models.services.subscriptions.ServiceSubscription;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Device extends AggregateRoot {
-    private DeviceSubscription subscription;
+public class ServiceType extends AggregateRoot {
+    private ServiceSubscription subscription;
     private String name;
     private Sku sku;
 
-    private Device(String name, DeviceSubscription subscription) {
+    private ServiceType(String name, ServiceSubscription subscription) {
         super();
 
         this.name = name;
@@ -30,15 +31,16 @@ public class Device extends AggregateRoot {
     }
 
     public void rename(@NonNull String name) {
+        registerEvent(new ServiceRenamedEvent(getId(), this.name, name));
         this.name = name;
         updateSku();
     }
 
-    public DeviceSubscription getSubscription() {
+    public ServiceSubscription getSubscription() {
         return subscription;
     }
 
-    public void setSubscription(@NonNull DeviceSubscription subscription) {
+    public void setSubscription(@NonNull ServiceSubscription subscription) {
         this.subscription = subscription;
         updateSku();
     }
@@ -49,18 +51,18 @@ public class Device extends AggregateRoot {
 
     private void updateSku() {
         this.sku = Sku
-            .For(Device.class)
+            .For(ServiceType.class)
             .model(name)
             .price(subscription.getName())
             .build();
     }
 
-    public static Device create(@NonNull String name, @NonNull DeviceSubscription subscription) {
-        return new Device(name, subscription);
+    public static ServiceType create(@NonNull String name, @NonNull ServiceSubscription subscription) {
+        return new ServiceType(name, subscription);
     }
 
     @Override
     protected void deleted() {
-        registerEvent(new DeviceDeletedEvent(getId()));
+        registerEvent(new ServiceDeletedEvent(getId()));
     }
 }

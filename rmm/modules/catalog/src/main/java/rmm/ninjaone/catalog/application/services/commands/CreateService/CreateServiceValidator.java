@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 import rmm.ninjaone.buildingblocks.application.bases.BaseValidator;
 
-@Component
+@Component("CreateServiceTypeValidator")
 public class CreateServiceValidator extends BaseValidator<CreateServiceCommand, CreateServiceResult> {
 
     public CreateServiceValidator(Validator validator) {

@@ -6,7 +6,7 @@ import rmm.ninjaone.buildingblocks.application.bases.BaseHandler;
 import rmm.ninjaone.buildingblocks.application.support.UserContext;
 import rmm.ninjaone.catalog.domain.contracts.devices.DeviceSrv;
 
-@Component
+@Component("DeleteDeviceTypeHandler")
 public class DeleteDeviceHandler extends BaseHandler<DeleteDeviceCommand, DeleteDeviceResult> {
     private final DeviceSrv deviceSrv;
 

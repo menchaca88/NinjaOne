@@ -8,7 +8,7 @@ import rmm.ninjaone.catalog.domain.contracts.services.ServiceSrv;
 import rmm.ninjaone.catalog.domain.contracts.subscriptions.SubscriptionSrv;
 import rmm.ninjaone.catalog.domain.models.Subscription;
 
-@Component
+@Component("CreateServiceTypeHandler")
 public class CreateServiceHandler extends BaseHandler<CreateServiceCommand, CreateServiceResult> {
     private final ServiceSrv serviceSrv;
     private final SubscriptionSrv subscriptionSrv;

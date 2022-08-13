@@ -26,10 +26,10 @@ public class RmmUser extends AggregateRoot {
     private RmmUser(String name, RmmRole role, Email email) {
         super();
 
-        rename(name);
-        setEmail(email);
-        setRole(role);
-        changePassword("");
+        this.name = name;
+        this.email = email;
+        this.role = role;
+        this.password = "";
 
         registerEvent(new UserAddedEvent(getId(), name));
     }

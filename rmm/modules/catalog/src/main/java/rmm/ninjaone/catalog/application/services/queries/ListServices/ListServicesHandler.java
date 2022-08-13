@@ -6,7 +6,7 @@ import rmm.ninjaone.buildingblocks.application.bases.BaseHandler;
 import rmm.ninjaone.buildingblocks.application.support.UserContext;
 import rmm.ninjaone.catalog.domain.contracts.services.ServiceSrv;
 
-@Component
+@Component("ListServiceTypesHandler")
 public class ListServicesHandler extends BaseHandler<ListServicesQuery, ListServicesResult> {
     private final ServiceSrv serviceSrv;
 

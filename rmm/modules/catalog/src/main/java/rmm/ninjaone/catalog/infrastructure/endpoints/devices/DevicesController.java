@@ -21,7 +21,7 @@ import rmm.ninjaone.catalog.application.devices.commands.UpdateDevice.UpdateDevi
 import rmm.ninjaone.catalog.application.devices.queries.DeviceDetails.DeviceDetailsQuery;
 import rmm.ninjaone.catalog.application.devices.queries.ListDevices.ListDevicesQuery;
 
-@RestController
+@RestController("DeviceTypesController")
 @RequestMapping(path = "${api.catalog}/devices")
 public class DevicesController extends BaseController {
     @GetMapping()

@@ -6,7 +6,7 @@ import rmm.ninjaone.buildingblocks.application.bases.BaseHandler;
 import rmm.ninjaone.buildingblocks.application.support.UserContext;
 import rmm.ninjaone.catalog.domain.contracts.services.ServiceSrv;
 
-@Component
+@Component("DeleteServiceTypeHandler")
 public class DeleteServiceHandler extends BaseHandler<DeleteServiceCommand, DeleteServiceResult> {
     private final ServiceSrv serviceSrv;
 

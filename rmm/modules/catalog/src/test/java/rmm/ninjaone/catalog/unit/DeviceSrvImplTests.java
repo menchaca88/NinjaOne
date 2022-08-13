@@ -26,8 +26,8 @@ import rmm.ninjaone.catalog.domain.contracts.services.ServiceRepository;
 import rmm.ninjaone.catalog.domain.exceptions.DeviceAlreadyExistsException;
 import rmm.ninjaone.catalog.domain.exceptions.DeviceNotFoundException;
 import rmm.ninjaone.catalog.domain.exceptions.NameAlreadyUsedException;
-import rmm.ninjaone.catalog.domain.models.devices.Device;
-import rmm.ninjaone.catalog.infrastructure.services.DeviceSrvImpl;
+import rmm.ninjaone.catalog.domain.models.devices.DeviceType;
+import rmm.ninjaone.catalog.domain.services.DeviceSrvImpl;
 
 @ExtendWith(MockitoExtension.class)
 public class DeviceSrvImplTests {
@@ -123,7 +123,7 @@ public class DeviceSrvImplTests {
         srvImpl.create(name, subscription);
 
         // Assert
-        Mockito.verify(deviceRepository).save(argThat((Device d) ->
+        Mockito.verify(deviceRepository).save(argThat((DeviceType d) ->
             d.getName().equals(name)));
     }
 
@@ -239,7 +239,7 @@ public class DeviceSrvImplTests {
         srvImpl.update(device.getId(), name);
 
         // Assert
-        Mockito.verify(deviceRepository).save(argThat((Device d) ->
+        Mockito.verify(deviceRepository).save(argThat((DeviceType d) ->
             d.getId().equals(device.getId()) &&
             d.getName().equals(name)));
     }

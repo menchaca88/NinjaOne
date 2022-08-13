@@ -1,4 +1,4 @@
-package rmm.ninjaone.catalog.infrastructure.services;
+package rmm.ninjaone.catalog.domain.services;
 
 import java.lang.reflect.Modifier;
 import java.util.List;

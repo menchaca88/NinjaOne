@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 import rmm.ninjaone.buildingblocks.application.bases.BaseValidator;
 
-@Component
+@Component("DeleteDeviceTypeValidator")
 public class DeleteDeviceValidator extends BaseValidator<DeleteDeviceCommand, DeleteDeviceResult> {
 
     public DeleteDeviceValidator(Validator validator) {

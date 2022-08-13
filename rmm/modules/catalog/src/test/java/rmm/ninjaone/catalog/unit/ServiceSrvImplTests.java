@@ -24,8 +24,8 @@ import rmm.ninjaone.catalog.domain.contracts.devices.DeviceRepository;
 import rmm.ninjaone.catalog.domain.contracts.services.ServiceRepository;
 import rmm.ninjaone.catalog.domain.exceptions.ServiceAlreadyExistsException;
 import rmm.ninjaone.catalog.domain.exceptions.ServiceNotFoundException;
-import rmm.ninjaone.catalog.domain.models.services.Service;
-import rmm.ninjaone.catalog.infrastructure.services.ServiceSrvImpl;
+import rmm.ninjaone.catalog.domain.models.services.ServiceType;
+import rmm.ninjaone.catalog.domain.services.ServiceSrvImpl;
 
 @ExtendWith(MockitoExtension.class)
 public class ServiceSrvImplTests {
@@ -123,7 +123,7 @@ public class ServiceSrvImplTests {
         srvImpl.create(name, subscription);
 
         // Assert
-        Mockito.verify(serviceRepository).save(argThat((Service d) ->
+        Mockito.verify(serviceRepository).save(argThat((ServiceType d) ->
             d.getName().equals(name)));
     }
 
@@ -231,7 +231,7 @@ public class ServiceSrvImplTests {
         srvImpl.update(service.getId(), name);
 
         // Assert
-        Mockito.verify(serviceRepository).save(argThat((Service d) ->
+        Mockito.verify(serviceRepository).save(argThat((ServiceType d) ->
             d.getId().equals(service.getId()) &&
             d.getName().equals(name)));
     }

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 import rmm.ninjaone.buildingblocks.application.bases.BaseValidator;
 
-@Component
+@Component("DeviceTypeDetailsValidator")
 public class DeviceDetailsValidator extends BaseValidator<DeviceDetailsQuery, DeviceDetailsResult> {
 
     public DeviceDetailsValidator(Validator validator) {
@@ -18,7 +18,6 @@ public class DeviceDetailsValidator extends BaseValidator<DeviceDetailsQuery, De
 
     @Override
     public void validate(DeviceDetailsQuery command) {
-
         var hasId = new Condition<DeviceDetailsQuery>(m -> m.getId() != null, "Id");
         var hasEmail = new Condition<DeviceDetailsQuery>(m -> m.getSku() != null, "Sku");
         
