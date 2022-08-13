@@ -22,8 +22,8 @@ public class Invoice extends AggregateRoot {
     private Date date;
     private UUID customerId;
 
-    private Invoice(UUID customerId, Date date) {
-        super();
+    private Invoice(UUID id, UUID customerId, Date date) {
+        super(id);
 
         this.date = date;
         this.customerId = customerId;
@@ -54,7 +54,7 @@ public class Invoice extends AggregateRoot {
         return item;
     }
 
-    public static Invoice create(@NonNull UUID customerId, @NonNull Date date) {
-        return new Invoice(customerId, date);
+    public static Invoice create(@NonNull UUID id, @NonNull UUID customerId, @NonNull Date date) {
+        return new Invoice(id, customerId, date);
     }
 }

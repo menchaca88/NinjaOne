@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 import rmm.ninjaone.buildingblocks.domain.events.users.UserDeletedEvent;
 import rmm.ninjaone.inventory.application.clients.commands.DeleteClient.DeleteClientCommand;
 
-@Component
+@Component("ClientDeletedEventHandler")
 @RequiredArgsConstructor
 public class UserDeletedEventHandler implements Notification.Handler<UserDeletedEvent> {
     private final Pipeline pipeline;
