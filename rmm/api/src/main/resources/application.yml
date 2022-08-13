@@ -34,6 +34,7 @@ api:
   users: '/api/users'
   catalog: '/api/catalog'
   inventory: 'api/inventory'
+  payments: /api/payments
   invoices: '/api/invoices'
   docs: '/api/docs'
 

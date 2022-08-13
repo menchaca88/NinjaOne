@@ -15,6 +15,7 @@ public class ApiUrls {
     private String users;
     private String catalog;
     private String inventory;
+    private String payments;
     private String invoices;
     private String docs;
 }
