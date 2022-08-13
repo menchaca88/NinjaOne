@@ -7,7 +7,12 @@ import lombok.RequiredArgsConstructor;
 
 @ControllerAdvice
 @RequiredArgsConstructor
-public class ExceptionsHandler implements GeneralExceptionsHandler, InventoryExceptionsHandler, AuthenticationExceptionsHandler, CatalogExceptionsHandler, UsersExceptionsHandler {
+public class ExceptionsHandler implements GeneralExceptionsHandler, 
+    InventoryExceptionsHandler, 
+    AuthenticationExceptionsHandler, 
+    CatalogExceptionsHandler, 
+    UsersExceptionsHandler,
+    InvoicesExceptionsHandler {
     private final MessageSource messageSource;
 
     @Override
