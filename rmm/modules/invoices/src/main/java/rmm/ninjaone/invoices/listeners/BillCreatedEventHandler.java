@@ -1,6 +1,8 @@
 package rmm.ninjaone.invoices.listeners;
 
 import java.time.YearMonth;
+import java.time.ZoneId;
+import java.util.Date;
 
 import org.springframework.stereotype.Component;
 
@@ -21,8 +23,8 @@ public class BillCreatedEventHandler implements Notification.Handler<BillCreated
         var toReplace = customerInvoices
             .stream()
             .filter(i -> {
-                var ym1 = YearMonth.from(event.getDate().toInstant());
-                var ym2 = YearMonth.from(i.getDate().toInstant());
+                var ym1 = toYM(event.getDate());
+                var ym2 = toYM(i.getDate());
 
                 return ym1.equals(ym2);
             })
@@ -39,5 +41,12 @@ public class BillCreatedEventHandler implements Notification.Handler<BillCreated
             invoice.addItem(item.getName(), item.getCharged());
 
         repository.save(invoice);
+    }
+
+    private YearMonth toYM(Date date) {
+        return YearMonth.from(date
+            .toInstant()
+            .atZone(ZoneId.systemDefault())
+            .toLocalDate());
     }
 }

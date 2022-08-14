@@ -1,7 +1,6 @@
 package rmm.ninjaone.invoices.endpoints;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 import org.modelmapper.ModelMapper;
@@ -27,8 +26,11 @@ public class InvoicesController {
     public ResponseEntity<ListInvoicesResponse> list() {
         var items = repository.findAllByCustomerId(getCurrentId());
 
-        List<InvoiceResponse> invoices = new ArrayList<InvoiceResponse>();
-        modelMapper.map(items, invoices);
+        var invoices = new ArrayList<InvoiceResponse>();
+        for (var invoice : items) {
+            var response = modelMapper.map(invoice, InvoiceResponse.class);
+            invoices.add(response);
+        }
 
         var response = new ListInvoicesResponse();
         response.setInvoices(invoices);

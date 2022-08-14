@@ -9,6 +9,8 @@ import java.util.UUID;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 
+import org.hibernate.annotations.Type;
+
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -18,9 +20,9 @@ import rmm.ninjaone.buildingblocks.domain.bases.AggregateRoot;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Invoice extends AggregateRoot {
     @ElementCollection private List<LineItem> items;
-    private Date date;
-    private UUID customerId;
+    @Type(type="uuid-char") private UUID customerId;
     private String customerName;
+    private Date date;
 
     private Invoice(UUID id, UUID customerId, String customerName, Date date) {
         super(id);
