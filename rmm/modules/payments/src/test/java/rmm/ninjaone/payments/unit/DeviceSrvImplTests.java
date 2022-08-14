@@ -1,4 +1,4 @@
-package rmm.ninjaone.inventory.unit;
+package rmm.ninjaone.payments.unit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -17,16 +17,15 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.jpa.domain.Specification;
 
-import rmm.ninjaone.buildingblocks.ports.catalog.CatalogPort;
-import rmm.ninjaone.inventory.data.ClientMother;
-import rmm.ninjaone.inventory.data.DeviceMother;
-import rmm.ninjaone.inventory.domain.contracts.clients.ClientRepository;
-import rmm.ninjaone.inventory.domain.contracts.devices.DeviceRepository;
-import rmm.ninjaone.inventory.domain.exceptions.DeviceAlreadyExistsException;
-import rmm.ninjaone.inventory.domain.exceptions.DeviceNotFoundException;
-import rmm.ninjaone.inventory.domain.factories.DeviceFactory;
-import rmm.ninjaone.inventory.domain.models.Device;
-import rmm.ninjaone.inventory.domain.services.DeviceSrvImpl;
+import rmm.ninjaone.payments.data.PayerMother;
+import rmm.ninjaone.buildingblocks.data.StringMother;
+import rmm.ninjaone.payments.data.DeviceMother;
+import rmm.ninjaone.payments.domain.contracts.payers.PayerRepository;
+import rmm.ninjaone.payments.domain.contracts.devices.DeviceRepository;
+import rmm.ninjaone.payments.domain.exceptions.DeviceAlreadyExistsException;
+import rmm.ninjaone.payments.domain.exceptions.DeviceNotFoundException;
+import rmm.ninjaone.payments.domain.models.DeviceCharge;
+import rmm.ninjaone.payments.domain.services.DeviceSrvImpl;
 
 @ExtendWith(MockitoExtension.class)
 public class DeviceSrvImplTests {
@@ -34,107 +33,79 @@ public class DeviceSrvImplTests {
     DeviceRepository deviceRepository;
 
     @Mock
-    ClientRepository clientRepository;
-
-    @Mock
-    CatalogPort catalogPort;
+    PayerRepository payerRepository;
 
     DeviceSrvImpl srvImpl;
 
     @BeforeEach
     void setUp() {
         Mockito.reset(deviceRepository);
-        Mockito.reset(clientRepository);
-        Mockito.reset(catalogPort);
+        Mockito.reset(payerRepository);
 
         Mockito.lenient().when(deviceRepository.save(any())).thenAnswer(x -> x.getArgument(0));
 
-        var factory = new DeviceFactory(catalogPort);
-        srvImpl = new DeviceSrvImpl(clientRepository, deviceRepository, factory);
-    }
-
-    @Test
-    @SuppressWarnings("unchecked")
-    void getAll_DevicesInRepo_ReturnsDevicesList() {
-        // Arrange
-        var clientId = UUID.randomUUID();
-        var devices = DeviceMother.countWithClient(clientId, 5);
-        
-        Mockito
-            .when(deviceRepository.findAll(any(Specification.class)))
-            .thenReturn(devices);
-
-        // Act
-        var result = srvImpl.getAll(clientId);
-
-        // Assert
-        assertEquals(devices.size(), result.size());
-        for (int i = 0; i < devices.size(); i++) {
-            assertEquals(devices.get(i).getId(), result.get(i).getId());
-            assertEquals(devices.get(i).getCount(), result.get(i).getCount());
-            assertEquals(clientId, result.get(i).getClientId());
-        }
+        srvImpl = new DeviceSrvImpl(payerRepository, deviceRepository);
     }
 
     @Test
     @SuppressWarnings("unchecked")
     void create_WithValidArgs_IsSavedToRepo() {
         // Arrange
-        var client = ClientMother.random();
-        var type = DeviceMother.randomType();
+        var id = UUID.randomUUID();
+        var typeId = UUID.randomUUID();
+        var typeName = StringMother.random();
+        var payer = PayerMother.random();
         var count = 3;
         
         Mockito
-            .when(clientRepository.findOne(any(Specification.class)))
-            .thenReturn(Optional.of(client));
-
-        Mockito
-            .when(catalogPort.findDevice(type.getId()))
-            .thenReturn(type);
+            .when(payerRepository.findOne(any(Specification.class)))
+            .thenReturn(Optional.of(payer));
 
         // Act
-        srvImpl.create(client.getId(), count, type.getId());
+        srvImpl.create(id, payer.getId(), count, typeId, typeName);
 
         // Assert
-        Mockito.verify(deviceRepository).save(argThat((Device d) ->
-            d.getClientId().equals(client.getId()) &&
-            d.getCount() == count &&
-            d.getTypeId().equals(type.getId()) &&
-            d.getTypeName().equals(type.getName())));
+        Mockito.verify(deviceRepository).save(argThat((DeviceCharge d) ->
+            d.getId().equals(id) &&
+            d.getTypeId().equals(typeId) &&
+            d.getTypeName().equals(typeName) &&
+            d.getPayerId().equals(payer.getId()) &&
+            d.getCount() == count));
     }
 
     @Test
     @SuppressWarnings("unchecked")
     void create_WithValidArgs_ReturnsDetails() {
         // Arrange
-        var client = ClientMother.random();
-        var type = DeviceMother.randomType();
+        var id = UUID.randomUUID();
+        var typeId = UUID.randomUUID();
+        var typeName = StringMother.random();
+        var payer = PayerMother.random();
         var count = 3;
         
         Mockito
-            .when(clientRepository.findOne(any(Specification.class)))
-            .thenReturn(Optional.of(client));
-
-        Mockito
-            .when(catalogPort.findDevice(type.getId()))
-            .thenReturn(type);
+            .when(payerRepository.findOne(any(Specification.class)))
+            .thenReturn(Optional.of(payer));
 
         // Act
-        var result = srvImpl.create(client.getId(), count, type.getId());
+        var result = srvImpl.create(id, payer.getId(), count, typeId, typeName);
 
         // Assert
-        assertEquals(client.getId(), result.getClientId());
+        assertEquals(id, result.getId());
+        assertEquals(typeId, result.getTypeId());
+        assertEquals(typeName, result.getTypeName());
+        assertEquals(payer.getId(), result.getPayerId());
         assertEquals(count, result.getCount());
-        assertEquals(type.getId(), result.getTypeId());
-        assertEquals(type.getName(), result.getTypeName());
     }
 
     @Test
     @SuppressWarnings("unchecked")
-    void create_WithExistingTypeAndClient_ThrowsException() {
+    void create_WithExistingId_ThrowsException() {
         // Arrange
-        var client = ClientMother.random();
+        var id = UUID.randomUUID();
         var typeId = UUID.randomUUID();
+        var typeName = StringMother.random();
+        var payer = PayerMother.random();
         var count = 3;
 
         Mockito
@@ -142,11 +113,11 @@ public class DeviceSrvImplTests {
             .thenReturn(true);
 
         Mockito
-            .when(clientRepository.findOne(any(Specification.class)))
-            .thenReturn(Optional.of(client));
+            .when(payerRepository.findOne(any(Specification.class)))
+            .thenReturn(Optional.of(payer));
 
         // Act
-        Executable handleAct = () -> srvImpl.create(client.getId(), count, typeId);
+        Executable handleAct = () -> srvImpl.create(id, payer.getId(), count, typeId, typeName);
 
         // Assert
         assertThrows(DeviceAlreadyExistsException.class, handleAct);
@@ -221,7 +192,7 @@ public class DeviceSrvImplTests {
         srvImpl.update(device.getId(), count);
 
         // Assert
-        Mockito.verify(deviceRepository).save(argThat((Device d) ->
+        Mockito.verify(deviceRepository).save(argThat((DeviceCharge d) ->
             d.getId().equals(device.getId()) &&
             d.getCount() == count));
     }

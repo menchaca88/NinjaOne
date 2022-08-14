@@ -1,4 +1,4 @@
-package rmm.ninjaone.inventory.unit;
+package rmm.ninjaone.payments.unit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -17,16 +17,15 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.jpa.domain.Specification;
 
-import rmm.ninjaone.buildingblocks.ports.catalog.CatalogPort;
-import rmm.ninjaone.inventory.data.ClientMother;
-import rmm.ninjaone.inventory.data.ServiceMother;
-import rmm.ninjaone.inventory.domain.contracts.clients.ClientRepository;
-import rmm.ninjaone.inventory.domain.contracts.services.ServiceRepository;
-import rmm.ninjaone.inventory.domain.exceptions.ServiceAlreadyExistsException;
-import rmm.ninjaone.inventory.domain.exceptions.ServiceNotFoundException;
-import rmm.ninjaone.inventory.domain.factories.ServiceFactory;
-import rmm.ninjaone.inventory.domain.models.Service;
-import rmm.ninjaone.inventory.domain.services.ServiceSrvImpl;
+import rmm.ninjaone.buildingblocks.data.StringMother;
+import rmm.ninjaone.payments.data.PayerMother;
+import rmm.ninjaone.payments.data.ServiceMother;
+import rmm.ninjaone.payments.domain.contracts.payers.PayerRepository;
+import rmm.ninjaone.payments.domain.contracts.services.ServiceRepository;
+import rmm.ninjaone.payments.domain.exceptions.ServiceAlreadyExistsException;
+import rmm.ninjaone.payments.domain.exceptions.ServiceNotFoundException;
+import rmm.ninjaone.payments.domain.models.ServiceCharge;
+import rmm.ninjaone.payments.domain.services.ServiceSrvImpl;
 
 @ExtendWith(MockitoExtension.class)
 public class ServiceSrvImplTests {
@@ -34,114 +33,86 @@ public class ServiceSrvImplTests {
     ServiceRepository serviceRepository;
 
     @Mock
-    ClientRepository clientRepository;
-
-    @Mock
-    CatalogPort catalogPort;
+    PayerRepository payerRepository;
 
     ServiceSrvImpl srvImpl;
 
     @BeforeEach
     void setUp() {
         Mockito.reset(serviceRepository);
-        Mockito.reset(clientRepository);
-        Mockito.reset(catalogPort);
+        Mockito.reset(payerRepository);
 
         Mockito.lenient().when(serviceRepository.save(any())).thenAnswer(x -> x.getArgument(0));
 
-        var factory = new ServiceFactory(catalogPort);
-        srvImpl = new ServiceSrvImpl(clientRepository, serviceRepository, factory);
-    }
-
-    @Test
-    @SuppressWarnings("unchecked")
-    void getAll_ServicesInRepo_ReturnsServicesList() {
-        // Arrange
-        var clientId = UUID.randomUUID();
-        var services = ServiceMother.countWithClient(clientId, 5);
-        
-        Mockito
-            .when(serviceRepository.findAll(any(Specification.class)))
-            .thenReturn(services);
-
-        // Act
-        var result = srvImpl.getAll(clientId);
-
-        // Assert
-        assertEquals(services.size(), result.size());
-        for (int i = 0; i < services.size(); i++) {
-            assertEquals(services.get(i).getId(), result.get(i).getId());
-            assertEquals(services.get(i).getTypeId(), result.get(i).getTypeId());
-            assertEquals(clientId, result.get(i).getClientId());
-        }
+        srvImpl = new ServiceSrvImpl(payerRepository, serviceRepository);
     }
 
     @Test
     @SuppressWarnings("unchecked")
     void create_WithValidArgs_IsSavedToRepo() {
         // Arrange
-        var client = ClientMother.random();
-        var type = ServiceMother.randomType();
+        var id = UUID.randomUUID();
+        var typeId = UUID.randomUUID();
+        var typeName = StringMother.random();
+        var payer = PayerMother.random();
         
         Mockito
-            .when(clientRepository.findOne(any(Specification.class)))
-            .thenReturn(Optional.of(client));
-
-        Mockito
-            .when(catalogPort.findService(type.getId()))
-            .thenReturn(type);
+            .when(payerRepository.findOne(any(Specification.class)))
+            .thenReturn(Optional.of(payer));
 
         // Act
-        srvImpl.create(client.getId(), type.getId());
+        srvImpl.create(id, payer.getId(), typeId, typeName);
 
         // Assert
-        Mockito.verify(serviceRepository).save(argThat((Service s) ->
-            s.getClientId().equals(client.getId()) &&
-            s.getTypeId().equals(type.getId()) &&
-            s.getTypeName().equals(type.getName())));
+        Mockito.verify(serviceRepository).save(argThat((ServiceCharge s) ->
+            s.getId().equals(id) &&
+            s.getTypeId().equals(typeId) &&
+            s.getTypeName().equals(typeName) &&
+            s.getPayerId().equals(payer.getId())));
     }
 
     @Test
     @SuppressWarnings("unchecked")
     void create_WithValidArgs_ReturnsDetails() {
         // Arrange
-        var client = ClientMother.random();
-        var type = ServiceMother.randomType();
+        var id = UUID.randomUUID();
+        var typeId = UUID.randomUUID();
+        var typeName = StringMother.random();
+        var payer = PayerMother.random();
         
         Mockito
-            .when(clientRepository.findOne(any(Specification.class)))
-            .thenReturn(Optional.of(client));
-
-        Mockito
-            .when(catalogPort.findService(type.getId()))
-            .thenReturn(type);
+            .when(payerRepository.findOne(any(Specification.class)))
+            .thenReturn(Optional.of(payer));
 
         // Act
-        var result = srvImpl.create(client.getId(), type.getId());
+        var result = srvImpl.create(id, payer.getId(), typeId, typeName);
 
         // Assert
-        assertEquals(client.getId(), result.getClientId());
-        assertEquals(type.getId(), result.getTypeId());
-        assertEquals(type.getName(), result.getTypeName());
+        assertEquals(id, result.getId());
+        assertEquals(typeId, result.getTypeId());
+        assertEquals(typeName, result.getTypeName());
+        assertEquals(payer.getId(), result.getPayerId());
     }
 
     @Test
     @SuppressWarnings("unchecked")
     void create_WithExistingTypeAndClient_ThrowsException() {
         // Arrange
-        var client = ClientMother.random();
+        var id = UUID.randomUUID();
         var typeId = UUID.randomUUID();
+        var typeName = StringMother.random();
+        var payer = PayerMother.random();
 
         Mockito
             .when(serviceRepository.exists(any(Specification.class)))
             .thenReturn(true);
 
         Mockito
-            .when(clientRepository.findOne(any(Specification.class)))
-            .thenReturn(Optional.of(client));
+            .when(payerRepository.findOne(any(Specification.class)))
+            .thenReturn(Optional.of(payer));
 
         // Act
-        Executable handleAct = () -> srvImpl.create(client.getId(), typeId);
+        Executable handleAct = () -> srvImpl.create(id, payer.getId(), typeId, typeName);
 
         // Assert
         assertThrows(ServiceAlreadyExistsException.class, handleAct);
