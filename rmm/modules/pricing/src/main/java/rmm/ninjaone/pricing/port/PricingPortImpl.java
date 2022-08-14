@@ -2,21 +2,19 @@ package rmm.ninjaone.pricing.port;
 
 import org.springframework.stereotype.Service;
 
+import lombok.RequiredArgsConstructor;
 import rmm.ninjaone.buildingblocks.ports.pricing.Package;
-import rmm.ninjaone.buildingblocks.ports.pricing.PricedItem;
 import rmm.ninjaone.buildingblocks.ports.pricing.PricedPackage;
 import rmm.ninjaone.buildingblocks.ports.pricing.PricingPort;
+import rmm.ninjaone.pricing.contracts.PricingSrv;
 
 @Service
+@RequiredArgsConstructor
 public class PricingPortImpl implements PricingPort {
+    private final PricingSrv pricingSrv;
+
     @Override
     public PricedPackage calulatePrice(Package pckg) {
-        var priceds = pckg
-            .getItems()
-            .stream()
-            .map(i -> new PricedItem(i, 1))
-            .toList();
-
-        return new PricedPackage(pckg, priceds);
+        return pricingSrv.calculatePrices(pckg);
     }
 }
