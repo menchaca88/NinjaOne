@@ -10,6 +10,8 @@ services:
     environment:
       MYSQL_HOST: mysql
       MYSQL_DATABASE: ninjaone
+      MYSQL_USER: root
+      MYSQL_PASS: password
     depends_on: 
       - mysql
     ports:
