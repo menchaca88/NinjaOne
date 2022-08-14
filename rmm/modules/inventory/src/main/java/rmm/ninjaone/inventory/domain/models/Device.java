@@ -30,7 +30,7 @@ public class Device extends AggregateRoot {
         this.typeId = typeId;
         this.TypeName = typeName;
 
-        registerEvent(new DeviceCreatedEvent(getId(), count, clientId));
+        registerEvent(new DeviceCreatedEvent(getId(), count, clientId, typeId, typeName));
     }
 
     public UUID getClientId() {

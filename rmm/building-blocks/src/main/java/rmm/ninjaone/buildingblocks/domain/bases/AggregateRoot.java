@@ -1,5 +1,6 @@
 package rmm.ninjaone.buildingblocks.domain.bases;
 
+import java.util.Collection;
 import java.util.UUID;
 
 import javax.persistence.Id;
@@ -26,5 +27,9 @@ public class AggregateRoot extends AbstractAggregateRoot<AggregateRoot> {
 
     @PreRemove
     protected void deleted() {
+    }
+
+    public Collection<Object> getDomainEvents() {
+        return domainEvents();
     }
 }

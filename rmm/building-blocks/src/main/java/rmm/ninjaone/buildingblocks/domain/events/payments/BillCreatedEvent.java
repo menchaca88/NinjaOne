@@ -8,15 +8,18 @@ import lombok.Getter;
 import lombok.Value;
 import rmm.ninjaone.buildingblocks.domain.bases.Event;
 
+@Getter
 public class BillCreatedEvent extends Event {
-    @Getter private UUID clientId;
-    @Getter private Date date;
-    @Getter private List<BilledDevice> devices;
-    @Getter private List<BilledService> services;
+    private UUID payerId;
+    private String payerName;
+    private Date date;
+    private List<BilledDevice> devices;
+    private List<BilledService> services;
 
-    public BillCreatedEvent(UUID entityId, UUID clientId, Date date, List<BilledDevice> devices, List<BilledService> services) {
+    public BillCreatedEvent(UUID entityId, UUID payerId, String payerName, Date date, List<BilledDevice> devices, List<BilledService> services) {
         super(entityId);
-        this.clientId = clientId;
+        this.payerId = payerId;
+        this.payerName = payerName;
         this.date = date;
         this.devices = devices;
         this.services = services;

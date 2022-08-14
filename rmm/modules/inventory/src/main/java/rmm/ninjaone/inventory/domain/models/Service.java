@@ -27,7 +27,7 @@ public class Service extends AggregateRoot {
         this.typeId = typeId;
         this.TypeName = typeName;
 
-        registerEvent(new ServiceCreatedEvent(getId(), clientId));
+        registerEvent(new ServiceCreatedEvent(getId(), clientId, typeId, typeName));
     }
 
     public UUID getClientId() {

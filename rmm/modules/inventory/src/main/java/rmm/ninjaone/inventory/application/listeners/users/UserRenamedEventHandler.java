@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 import rmm.ninjaone.buildingblocks.domain.events.users.UserRenamedEvent;
 import rmm.ninjaone.inventory.application.clients.commands.UpdateClient.UpdateClientCommand;
 
-@Component
+@Component("ClientRenamedEventHandler")
 @RequiredArgsConstructor
 public class UserRenamedEventHandler implements Notification.Handler<UserRenamedEvent> {
     private final Pipeline pipeline;
