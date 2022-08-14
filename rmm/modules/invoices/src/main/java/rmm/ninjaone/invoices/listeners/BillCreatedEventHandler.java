@@ -17,7 +17,7 @@ public class BillCreatedEventHandler implements Notification.Handler<BillCreated
 
     @Override
     public void handle(BillCreatedEvent event) {
-        var customerInvoices = repository.findAllByCustomerId(event.getClientId());
+        var customerInvoices = repository.findAllByCustomerId(event.getPayerId());
         var toReplace = customerInvoices
             .stream()
             .filter(i -> {
@@ -30,7 +30,7 @@ public class BillCreatedEventHandler implements Notification.Handler<BillCreated
 
         repository.deleteAll(toReplace);
 
-        var invoice = Invoice.create(event.getEntityId(), event.getClientId(), event.getDate());
+        var invoice = Invoice.create(event.getEntityId(), event.getPayerId(), event.getPayerName(), event.getDate());
 
         for (var item : event.getDevices())
             invoice.addItem(item.getName(), item.getCount(), item.getCharged());

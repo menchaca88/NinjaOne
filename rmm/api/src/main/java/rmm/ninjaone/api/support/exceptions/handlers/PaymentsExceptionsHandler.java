@@ -10,32 +10,32 @@ import org.springframework.web.context.request.WebRequest;
 
 import rmm.ninjaone.api.support.exceptions.ErrorCodes;
 import rmm.ninjaone.api.support.exceptions.ErrorResponse;
-import rmm.ninjaone.inventory.domain.exceptions.ClientAlreadyExistsException;
-import rmm.ninjaone.inventory.domain.exceptions.ClientNotFoundException;
-import rmm.ninjaone.inventory.domain.exceptions.DeviceAlreadyExistsException;
-import rmm.ninjaone.inventory.domain.exceptions.DeviceNotFoundException;
-import rmm.ninjaone.inventory.domain.exceptions.DeviceTypeNotFoundException;
-import rmm.ninjaone.inventory.domain.exceptions.ServiceAlreadyExistsException;
-import rmm.ninjaone.inventory.domain.exceptions.ServiceNotFoundException;
-import rmm.ninjaone.inventory.domain.exceptions.ServiceTypeNotFoundException;
+import rmm.ninjaone.payments.domain.exceptions.PayerAlreadyExistsException;
+import rmm.ninjaone.payments.domain.exceptions.PayerNotFoundException;
+import rmm.ninjaone.payments.domain.exceptions.BillAlreadyPaidException;
+import rmm.ninjaone.payments.domain.exceptions.DeviceAlreadyExistsException;
+import rmm.ninjaone.payments.domain.exceptions.DeviceNotFoundException;
+import rmm.ninjaone.payments.domain.exceptions.ServiceAlreadyExistsException;
+import rmm.ninjaone.payments.domain.exceptions.ServiceNotFoundException;
+import rmm.ninjaone.payments.domain.exceptions.UnknownPriceException;
 
-public interface InventoryExceptionsHandler {
+public interface PaymentsExceptionsHandler {
     MessageSource messageSource();
 
-    @ExceptionHandler(value = { ClientAlreadyExistsException.class })
-    public default ResponseEntity<ErrorResponse> handleClientAlreadyExistsException(ClientAlreadyExistsException ex, WebRequest request, Locale locale) {
-       var message = messageSource().getMessage("errors.clients.alreadyExists", null, locale);
+    @ExceptionHandler(value = { PayerAlreadyExistsException.class })
+    public default ResponseEntity<ErrorResponse> handlePayerAlreadyExistsException(PayerAlreadyExistsException ex, WebRequest request, Locale locale) {
+       var message = messageSource().getMessage("errors.payers.alreadyExists", null, locale);
 
-        ErrorResponse response = new ErrorResponse(message, ErrorCodes.CLIENT_EXISTS);
+        ErrorResponse response = new ErrorResponse(message, ErrorCodes.PAYER_EXISTS);
 
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(value = { ClientNotFoundException.class })
-    public default ResponseEntity<ErrorResponse> handleClientNotFoundException(ClientNotFoundException ex, WebRequest request, Locale locale) {
-       var message = messageSource().getMessage("errors.clients.notFound", null, locale);
+    @ExceptionHandler(value = { PayerNotFoundException.class })
+    public default ResponseEntity<ErrorResponse> handlePayerNotFoundException(PayerNotFoundException ex, WebRequest request, Locale locale) {
+       var message = messageSource().getMessage("errors.payers.notFound", null, locale);
 
-        ErrorResponse response = new ErrorResponse(message, ErrorCodes.CLIENT_NOT_FOUND);
+        ErrorResponse response = new ErrorResponse(message, ErrorCodes.PAYER_NOT_FOUND);
 
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
@@ -51,15 +51,6 @@ public interface InventoryExceptionsHandler {
 
     @ExceptionHandler(value = { DeviceNotFoundException.class })
     public default ResponseEntity<ErrorResponse> handleDeviceNotFoundException(DeviceNotFoundException ex, WebRequest request, Locale locale) {
-       var message = messageSource().getMessage("errors.devices.notFound", null, locale);
-
-        ErrorResponse response = new ErrorResponse(message, ErrorCodes.DEVICE_NOT_FOUND);
-
-        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
-    }
-
-    @ExceptionHandler(value = { DeviceTypeNotFoundException.class })
-    public default ResponseEntity<ErrorResponse> handleDeviceTypeNotFoundException(DeviceTypeNotFoundException ex, WebRequest request, Locale locale) {
        var message = messageSource().getMessage("errors.devices.notFound", null, locale);
 
         ErrorResponse response = new ErrorResponse(message, ErrorCodes.DEVICE_NOT_FOUND);
@@ -85,12 +76,21 @@ public interface InventoryExceptionsHandler {
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(value = { ServiceTypeNotFoundException.class })
-    public default ResponseEntity<ErrorResponse> handleServiceTypeNotFoundException(ServiceTypeNotFoundException ex, WebRequest request, Locale locale) {
-       var message = messageSource().getMessage("errors.services.notFound", null, locale);
+    @ExceptionHandler(value = { BillAlreadyPaidException.class })
+    public default ResponseEntity<ErrorResponse> handleBillAlreadyPaidException(BillAlreadyPaidException ex, WebRequest request, Locale locale) {
+       var message = messageSource().getMessage("errors.bills.alreadyPaid", null, locale);
 
-        ErrorResponse response = new ErrorResponse(message, ErrorCodes.SERVICE_NOT_FOUND);
+        ErrorResponse response = new ErrorResponse(message, ErrorCodes.BILL_PAID);
 
-        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(response, HttpStatus.NOT_ACCEPTABLE);
+    }
+
+    @ExceptionHandler(value = { UnknownPriceException.class })
+    public default ResponseEntity<ErrorResponse> handleUnknownPriceException(UnknownPriceException ex, WebRequest request, Locale locale) {
+       var message = messageSource().getMessage("errors.subscriptions.unknownPrice", null, locale);
+
+        ErrorResponse response = new ErrorResponse(message, ErrorCodes.UNKNOWN_PRICE);
+
+        return new ResponseEntity<>(response, HttpStatus.NOT_ACCEPTABLE);
     }
 }

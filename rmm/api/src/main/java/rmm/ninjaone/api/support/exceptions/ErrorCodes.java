@@ -15,6 +15,9 @@ public class ErrorCodes {
     public final static String SUBSCRIPTION_NOT_FOUND = "SUBSCRIPTION_NOT_FOUND";
     public final static String CLIENT_EXISTS = "CLIENT_ALREADY_EXISTS";
     public final static String CLIENT_NOT_FOUND = "CLIENT_NOT_FOUND";
-
+    public final static String PAYER_EXISTS="PAYER_ALREADY_EXISTS";
+    public final static String PAYER_NOT_FOUND="PAYER_NOT_FOUND";
+    public final static String BILL_PAID="BILL_PAID";
+    public final static String UNKNOWN_PRICE="UNKNOWN_PRICE";
     public final static String INVOICE_NOT_FOUND = "INVOICE_NOT_FOUND";
 }

@@ -12,6 +12,7 @@ import lombok.Setter;
 public class InvoiceDetailsReponse {
     private UUID id;
     private UUID customerId;
+    private String customerName;
     private Date date;
     private double total;
     private List<LineItemResponse> items;

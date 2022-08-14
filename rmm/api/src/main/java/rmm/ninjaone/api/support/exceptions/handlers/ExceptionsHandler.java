@@ -12,6 +12,7 @@ public class ExceptionsHandler implements GeneralExceptionsHandler,
     AuthenticationExceptionsHandler, 
     CatalogExceptionsHandler, 
     UsersExceptionsHandler,
+    PaymentsExceptionsHandler,
     InvoicesExceptionsHandler {
     private final MessageSource messageSource;
 
