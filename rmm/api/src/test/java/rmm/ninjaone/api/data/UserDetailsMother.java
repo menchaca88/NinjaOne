@@ -1,4 +1,4 @@
-package rmm.ninjaone.api.data.users;
+package rmm.ninjaone.api.data;
 
 import java.util.UUID;
 
