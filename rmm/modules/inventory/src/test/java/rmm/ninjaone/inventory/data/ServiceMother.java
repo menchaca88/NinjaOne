@@ -6,7 +6,6 @@ import java.util.UUID;
 
 import rmm.ninjaone.buildingblocks.data.ObjectMother;
 import rmm.ninjaone.buildingblocks.data.StringMother;
-import rmm.ninjaone.buildingblocks.ports.catalog.ServiceDetails;
 import rmm.ninjaone.inventory.domain.models.Service;
 
 public class ServiceMother extends ObjectMother {
@@ -14,12 +13,6 @@ public class ServiceMother extends ObjectMother {
         var service = Service.create(UUID.randomUUID(), UUID.randomUUID(), StringMother.random());
 
         return service;
-    }
-
-    public static ServiceDetails randomType() {
-        var type = new ServiceDetails(UUID.randomUUID(), StringMother.random(), StringMother.random());
-
-        return type;
     }
 
     public static List<Service> countWithClient(UUID clientId, Integer count) {

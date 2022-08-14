@@ -19,6 +19,7 @@ import org.springframework.data.jpa.domain.Specification;
 
 import rmm.ninjaone.buildingblocks.ports.catalog.CatalogPort;
 import rmm.ninjaone.inventory.data.ClientMother;
+import rmm.ninjaone.inventory.data.DetailsMother;
 import rmm.ninjaone.inventory.data.ServiceMother;
 import rmm.ninjaone.inventory.domain.contracts.clients.ClientRepository;
 import rmm.ninjaone.inventory.domain.contracts.services.ServiceRepository;
@@ -81,7 +82,7 @@ public class ServiceSrvImplTests {
     void create_WithValidArgs_IsSavedToRepo() {
         // Arrange
         var client = ClientMother.random();
-        var type = ServiceMother.randomType();
+        var type = DetailsMother.randomType();
         
         Mockito
             .when(clientRepository.findOne(any(Specification.class)))
@@ -106,7 +107,7 @@ public class ServiceSrvImplTests {
     void create_WithValidArgs_ReturnsDetails() {
         // Arrange
         var client = ClientMother.random();
-        var type = ServiceMother.randomType();
+        var type = DetailsMother.randomType();
         
         Mockito
             .when(clientRepository.findOne(any(Specification.class)))

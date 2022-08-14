@@ -6,7 +6,6 @@ import java.util.UUID;
 
 import rmm.ninjaone.buildingblocks.data.ObjectMother;
 import rmm.ninjaone.buildingblocks.data.StringMother;
-import rmm.ninjaone.buildingblocks.ports.catalog.DeviceDetails;
 import rmm.ninjaone.inventory.domain.models.Device;
 
 public class DeviceMother extends ObjectMother {
@@ -14,12 +13,6 @@ public class DeviceMother extends ObjectMother {
         var device = Device.create(random.nextInt(100), UUID.randomUUID(), UUID.randomUUID(), StringMother.random());
 
         return device;
-    }
-
-    public static DeviceDetails randomType() {
-        var type = new DeviceDetails(UUID.randomUUID(), StringMother.random(), StringMother.random());
-
-        return type;
     }
 
     public static List<Device> countWithClient(UUID clientId, Integer count) {

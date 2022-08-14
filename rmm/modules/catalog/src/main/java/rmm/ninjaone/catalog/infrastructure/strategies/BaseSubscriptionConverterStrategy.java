@@ -1,6 +1,7 @@
 package rmm.ninjaone.catalog.infrastructure.strategies;
 
 import java.io.IOException;
+import java.util.Map;
 
 import javax.validation.ConstraintViolationException;
 import javax.validation.Validator;
@@ -46,6 +47,24 @@ public abstract class BaseSubscriptionConverterStrategy<T extends Subscription, 
         validate(raw);
 
         return convertToSubscription(raw);
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public RawData convertToRaw(Subscription subscription) {
+        if (!matches(subscription))
+            throw new UnsupportedConversionException(subscription.getName());
+
+        var sub = (T)subscription;
+
+        Map<String, Object> raw = objectMapper.convertValue(sub, Map.class);
+        
+        var data = new RawData();
+
+        data.setType(subscription.getName());
+        data.setData(raw);
+
+        return data;
     }
 
     @Override

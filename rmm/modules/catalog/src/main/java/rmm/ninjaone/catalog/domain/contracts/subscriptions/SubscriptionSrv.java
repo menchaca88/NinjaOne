@@ -12,4 +12,6 @@ public interface SubscriptionSrv {
 
     DeviceSubscription deviceCreate(Subscription.RawData data);
     ServiceSubscription serviceCreate(Subscription.RawData data);
+
+    Subscription.RawData toData(Subscription data);
 }

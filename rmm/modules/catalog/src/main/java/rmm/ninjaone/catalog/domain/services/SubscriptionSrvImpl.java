@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
 import rmm.ninjaone.catalog.domain.contracts.subscriptions.SubscriptionConverterStrategy;
 import rmm.ninjaone.catalog.domain.contracts.subscriptions.SubscriptionSrv;
+import rmm.ninjaone.catalog.domain.models.Subscription;
 import rmm.ninjaone.catalog.domain.models.Subscription.RawData;
 import rmm.ninjaone.catalog.domain.models.devices.subscriptions.DeviceSubscription;
 import rmm.ninjaone.catalog.domain.models.services.subscriptions.ServiceSubscription;
@@ -60,5 +61,14 @@ public class SubscriptionSrvImpl implements SubscriptionSrv {
                     return (ServiceSubscription)converter.convert(data);
 
         throw new UnsupportedConversionException(data.getType());
+    }
+
+    @Override
+    public RawData toData(Subscription subscription) {
+        for (SubscriptionConverterStrategy converter : converters)
+            if (converter.matches(subscription)) 
+                    return converter.convertToRaw(subscription);
+
+        throw new UnsupportedConversionException(subscription.getName());
     }
 }

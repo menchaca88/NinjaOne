@@ -19,6 +19,7 @@ import org.springframework.data.jpa.domain.Specification;
 
 import rmm.ninjaone.buildingblocks.ports.catalog.CatalogPort;
 import rmm.ninjaone.inventory.data.ClientMother;
+import rmm.ninjaone.inventory.data.DetailsMother;
 import rmm.ninjaone.inventory.data.DeviceMother;
 import rmm.ninjaone.inventory.domain.contracts.clients.ClientRepository;
 import rmm.ninjaone.inventory.domain.contracts.devices.DeviceRepository;
@@ -81,7 +82,7 @@ public class DeviceSrvImplTests {
     void create_WithValidArgs_IsSavedToRepo() {
         // Arrange
         var client = ClientMother.random();
-        var type = DeviceMother.randomType();
+        var type = DetailsMother.randomType();
         var count = 3;
         
         Mockito
@@ -108,7 +109,7 @@ public class DeviceSrvImplTests {
     void create_WithValidArgs_ReturnsDetails() {
         // Arrange
         var client = ClientMother.random();
-        var type = DeviceMother.randomType();
+        var type = DetailsMother.randomType();
         var count = 3;
         
         Mockito

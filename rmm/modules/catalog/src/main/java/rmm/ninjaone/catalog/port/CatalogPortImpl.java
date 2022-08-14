@@ -4,28 +4,32 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
-import an.awesome.pipelinr.Pipeline;
 import lombok.RequiredArgsConstructor;
 import rmm.ninjaone.buildingblocks.ports.catalog.CatalogPort;
-import rmm.ninjaone.buildingblocks.ports.catalog.DeviceDetails;
-import rmm.ninjaone.buildingblocks.ports.catalog.ServiceDetails;
-import rmm.ninjaone.catalog.application.devices.queries.DeviceDetails.DeviceDetailsQuery;
-import rmm.ninjaone.catalog.application.services.queries.ServiceDetails.ServiceDetailsQuery;
+import rmm.ninjaone.buildingblocks.ports.catalog.Details;
+import rmm.ninjaone.buildingblocks.ports.catalog.SubscriptionData;
+import rmm.ninjaone.catalog.domain.contracts.devices.DeviceSrv;
+import rmm.ninjaone.catalog.domain.contracts.services.ServiceSrv;
+import rmm.ninjaone.catalog.domain.contracts.subscriptions.SubscriptionSrv;
 import rmm.ninjaone.catalog.domain.exceptions.DeviceNotFoundException;
+import rmm.ninjaone.catalog.domain.exceptions.ServiceNotFoundException;
 
 @Service
 @RequiredArgsConstructor
 public class CatalogPortImpl implements CatalogPort {
-    private final Pipeline pipeline;
+    private final SubscriptionSrv subscriptionSrv;
+    private final DeviceSrv deviceSrv;
+    private final ServiceSrv ServiceSrv;
 
     @Override
-    public DeviceDetails findDevice(UUID id) {
-        var query = new DeviceDetailsQuery();
-        query.setId(id);
-
+    public Details findDevice(UUID id) {
         try {
-            var result = pipeline.send(query);
-            return new DeviceDetails(result.getId(), result.getName(), result.getSku());
+            var device = deviceSrv.get(id);
+
+            var rawData = subscriptionSrv.toData(device.getSubscription());
+            var data = new SubscriptionData(rawData.getType(), rawData.getData());
+
+            return new Details(device.getId(), device.getName(), device.getSku().getRaw(), data);
         }
         catch (DeviceNotFoundException ex) {
             return null;
@@ -33,15 +37,16 @@ public class CatalogPortImpl implements CatalogPort {
     }
 
     @Override
-    public ServiceDetails findService(UUID id) {
-        var query = new ServiceDetailsQuery();
-        query.setId(id);
-
+    public Details findService(UUID id) {
         try {
-            var result = pipeline.send(query);
-            return new ServiceDetails(result.getId(), result.getName(), result.getSku());
+            var service = ServiceSrv.get(id);
+
+            var rawData = subscriptionSrv.toData(service.getSubscription());
+            var data = new SubscriptionData(rawData.getType(), rawData.getData());
+
+            return new Details(service.getId(), service.getName(), service.getSku().getRaw(), data);
         }
-        catch (DeviceNotFoundException ex) {
+        catch (ServiceNotFoundException ex) {
             return null;
         }
     }
