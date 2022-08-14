@@ -1,0 +1,33 @@
+version: "3.9"
+
+services:
+  rmm:
+    image: menchaca/ninjaonermm
+    restart: always
+    build:
+      dockerfile: Dockerfile
+      context: ../rmm/
+    environment:
+      MYSQL_HOST: mysql
+      MYSQL_DATABASE: ninjaone
+    depends_on: 
+      - mysql
+    ports:
+      - '8080:8080'
+  mysql:
+    image: mysql:latest
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 'password'
+    expose:
+      - '3306'
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    restart: always
+    depends_on:
+      - mysql
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+    ports:
+      - 8081:80
