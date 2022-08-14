@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class TieredServiceSubscription extends ServiceSubscription {
     private final List<Tier> tiers;
+    private final double lastCost;
 
     @Getter
     @RequiredArgsConstructor

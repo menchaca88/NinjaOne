@@ -27,7 +27,7 @@ public class TieredServiceSubscriptionConverterStrategy extends BaseSubscription
             .getTiers()
             .stream()
             .map(t -> new TieredServiceSubscription.Tier(t.getCount(), t.getCost()))
-            .toList());
+            .toList(), data.getLastCost());
     }
 
     @Override
@@ -36,7 +36,7 @@ public class TieredServiceSubscriptionConverterStrategy extends BaseSubscription
             .getTiers()
             .stream()
             .map(t -> new TieredData.Tier(t.getCount(), t.getCost()))
-            .toList());
+            .toList(), subcription.getLastCost());
     }
 
     @Data
@@ -44,6 +44,7 @@ public class TieredServiceSubscriptionConverterStrategy extends BaseSubscription
     @AllArgsConstructor
     public static class TieredData {
         @NotEmpty private List<Tier> tiers;
+        @Min(0) private double lastCost;
 
         @Data
         @NoArgsConstructor
