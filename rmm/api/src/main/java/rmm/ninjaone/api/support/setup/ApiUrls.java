@@ -1,5 +1,7 @@
 package rmm.ninjaone.api.support.setup;
 
+import java.util.List;
+
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
@@ -17,5 +19,5 @@ public class ApiUrls {
     private String inventory;
     private String payments;
     private String invoices;
-    private String docs;
+    private List<String> docs;
 }

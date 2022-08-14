@@ -77,7 +77,7 @@ public class WebSecurityConfig {
             .authorizeRequests()
                 .antMatchers(apiUrls.getLogin(), apiUrls.getRegister())
                     .permitAll()
-                .antMatchers(allPaths(apiUrls.getDocs()))
+                .antMatchers(apiUrls.getDocs().stream().map(x -> allPaths(x)).toArray(String[]::new))
                     .permitAll()
                 .antMatchers(allPaths(apiUrls.getUsers()), allPaths(apiUrls.getCatalog()))
                     .hasAuthority(Authorities.Admin)
