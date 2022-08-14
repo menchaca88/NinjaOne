@@ -5,5 +5,5 @@ include 'modules:identity'
 include 'modules:catalog'
 include 'modules:inventory'
 include 'modules:payments'
-
+include 'modules:pricing'
 include 'modules:invoices'

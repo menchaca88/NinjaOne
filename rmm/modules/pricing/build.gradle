@@ -1,0 +1,15 @@
+dependencies {
+    implementation project(':building-blocks')
+
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    implementation 'org.springframework:spring-context'
+    
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation project(':building-blocks').sourceSets.test.output
+}
+
+test {
+    useJUnitPlatform()
+}
