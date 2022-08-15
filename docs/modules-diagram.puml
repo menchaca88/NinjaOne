@@ -1,0 +1,104 @@
+@startuml
+scale max 2000 width
+
+package "Identity" #f3e8f8 {
+    object User
+    object Admin
+    object Role
+
+    User --> Role : has
+    Admin --> User : is a
+}
+
+package "Catalog" #ffeddb {
+    object DeviceType
+    object ServiceType
+    object Subscription
+    enum DeviceSubscription {
+        PerUnit
+        MonthlyFixed
+        Tiered
+    }
+    object ServiceSubscription {
+        PerDevice
+        PerDeviceType
+        MonthlyFixed
+        Tiered
+    }
+
+    DeviceSubscription --> Subscription : is a
+    ServiceSubscription --> Subscription : is a
+    DeviceType --> DeviceSubscription : has assigned
+    ServiceType --> ServiceSubscription : has assigned
+    Admin --> DeviceType : manages
+    Admin --> ServiceType : manages
+}
+
+package "Inventory" #e4f7e4 {
+    object Client
+    object Device
+    object Service
+
+    Client --> Device : registers
+    Client --> Service : registers
+    Device --> DeviceType : has a
+    Service --> ServiceType : has a
+}
+
+package "Payments" #ffc1c1 {
+    object Payer
+    object Charge
+    object DeviceCharge
+    object ServiceCharge
+    object Bill
+
+    
+    Payer --> Bill : pays for
+    Payer --> Charge : has assigneds
+    DeviceCharge --> Charge : is a
+    ServiceCharge --> Charge : is a
+    Bill --> DeviceCharge : contains
+    Bill --> ServiceCharge : contains
+}
+
+package "Pricing" #f39f18 {
+    object PricingStrategy
+    enum DevicePricingStrategy {
+        PerUnit
+        MonthlyFixed
+        Tiered
+    }
+    object ServicePricingStrategy {
+        PerDevice
+        PerDeviceType
+        MonthlyFixed
+        Tiered
+    }
+
+    Bill --> PricingStrategy : calculated usings
+    DevicePricingStrategy --> PricingStrategy : is a
+    ServicePricingStrategy --> PricingStrategy : is a
+    DevicePricingStrategy --> DeviceSubscription : is for
+    ServicePricingStrategy --> ServiceSubscription : is for
+}
+
+package "Invoices" #cfd3cd {
+    object Customer
+    object Invoice
+    object LineItem
+
+    Invoice --> Customer : belongs to
+    Invoice --> LineItem : contains
+    
+    left to right direction
+    Bill --> Invoice : is a
+    Charge --> LineItem : represents
+}
+
+top to bottom direction
+
+User -r-> Client : is a
+User -l-> Customer : is a
+User -d-> Payer : is a
+
+@enduml
